@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+public enum SoldierState{Ally,Enemy,Sick}
 
 public class SoldierMain : MonoBehaviour {
 	
@@ -8,7 +12,7 @@ public class SoldierMain : MonoBehaviour {
 	public TowerMain Target;
 	
 	public int x,y;
-	public bool AllyUnit;
+	public SoldierState State;
 	
 	public bool DEAD{get;private set;}
 	public bool MOVING{get{return moving;}}
@@ -36,7 +40,7 @@ public class SoldierMain : MonoBehaviour {
 	}
 
 	
-	public void UpdateTurn(){
+	public void UpdateTurn(List<SoldierMain> all_soldiers){
 		
 		//check for enemies
 		for (int i=0;i<4;i++){
@@ -52,52 +56,112 @@ public class SoldierMain : MonoBehaviour {
 			
 			SoldierMain unit=grid.GetUnit(x+xx,y+xy);
 			if (unit!=null){
-				if (AllyUnit!=unit.AllyUnit){
+				if (State!=unit.State){
 					//attack
-					unit.Hit(attack_power);
+					unit.Hit(attack_power,this);
 					return;
 				}
 			}
 		}
 		
 		//move
-		int tx=Target.x-x;
-		int ty=Target.y-y;
-		
-		int ty_a=Mathf.Abs(ty);
-		int tx_a=Mathf.Abs(tx);
-		
-		int ty_s=(int)Mathf.Sign(ty);
-		int tx_s=(int)Mathf.Sign(tx);
-		
+
 		int mx=0,my=0;
-		
-		if (ty_a<8){
+		if (State==SoldierState.Sick){
 			
-			if (ty_a==1){
-				//move only x
-				mx=tx_s;
+
+			float min=200202002;
+			SoldierMain closest=null;
+			foreach(var s in all_soldiers){
+				if (s==this||s.State==SoldierState.Sick) continue;
+				float dis=Vector2.Distance(new Vector2(x,y),new Vector2(s.x,s.y));
+				if (dis<min){
+					min=dis;
+					closest=s;
+				}
+			}
+			
+			if (closest==null){
+				//wander aimlessly
+				if (Subs.RandomPercent()<40){
+					//do nothing
+				}
+				else{
+					if (Subs.RandomPercent()<40){
+						if (Subs.RandomBool())
+							mx=-1;
+						else
+							mx=1;
+					}
+					else{
+						if (Subs.RandomBool())
+							my=-1;
+						else
+							my=1;
+					}
+				}
 			}
 			else{
-				//move x
-				if (Subs.RandomPercent()<30){
+				//move towards non infected.
+				int tx=closest.x-x;
+				int ty=closest.y-y;
+				
+				int ty_a=Mathf.Abs(ty);
+				int tx_a=Mathf.Abs(tx);
+				
+				int ty_s=(int)Mathf.Sign(ty);
+				int tx_s=(int)Mathf.Sign(tx);
+				
+				if (tx_a>ty_a){
 					mx=tx_s;
 				}
 				else{
 					my=ty_s;
 				}
 			}
-					
 		}
 		else{
-			my=ty_s;
+			
+			int tx=Target.x-x;
+			int ty=Target.y-y;
+			
+			int ty_a=Mathf.Abs(ty);
+			int tx_a=Mathf.Abs(tx);
+			
+			int ty_s=(int)Mathf.Sign(ty);
+			int tx_s=(int)Mathf.Sign(tx);
+			
+			
+			//move towards target.
+			if (ty_a<8){
+				
+				if (ty_a==1){
+					//move only x
+					mx=tx_s;
+				}
+				else{
+					//move x
+					if (Subs.RandomPercent()<30){
+						mx=tx_s;
+					}
+					else{
+						my=ty_s;
+					}
+				}
+						
+			}
+			else{
+				my=ty_s;
+			}
 		}
 		
+		//move
 		if (!grid.GetPos(x+mx,y+my)){
 			//Move 
 			//SetPos(x+mx,y+my);
 			Move(mx,my);
 		}
+		
 	}
 	
 		
@@ -166,8 +230,15 @@ public class SoldierMain : MonoBehaviour {
 		}
 	}
 	
-	public void Hit(int power){
+	public void Hit(int power,SoldierMain attacker){
 		HP-=power;
+		
+		if (attacker.State==SoldierState.Sick){
+			if (Subs.RandomPercent()<25){
+				SetState(SoldierState.Sick);
+			}
+		}
+		
 		StartBlinking();
 	}
 	
@@ -239,5 +310,24 @@ public class SoldierMain : MonoBehaviour {
 	{
 		grid.ClearPos(x,y);
 		Destroy(gameObject);
+	}
+	
+	
+	public void SetState(SoldierState state){
+		State=state;
+		
+		if (state==SoldierState.Ally){
+			setColor(new Color(0.65f,0.65f,0.65f));
+		}
+		else
+		if (state==SoldierState.Enemy){
+			setColor(new Color(0.1f,0.1f,0.1f));
+		}
+		else
+		if (state==SoldierState.Sick){
+			setColor(new Color(0.8f,0f,1f));
+			
+		}
+		
 	}
 }
