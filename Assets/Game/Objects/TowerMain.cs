@@ -2,17 +2,51 @@
 using System.Collections;
 
 public class TowerMain : MonoBehaviour {
-	public int x,y;
+	public int x,y,gate_x,gate_y;
 	public ChessboardGrid grid;
+	public Torningrafiikka graphics;
 	// Use this for initialization
-	void Start () {
+	
+	public bool DEAD;
+	int hp;
+	public int HP{
 		
+		get{
+			return hp;
+		}
+		set{
+			hp=value;
+			
+			if (hp<=0){
+				hp=0;
+				DEAD=true;
+				grid.SetPos(gate_x,gate_y,false);
+				graphics.SmashPortti();
+			}
+			else{
+				StartBlinking();
+			}
+		}
+	}
+	
+	Color _color;
+	
+	void Start (){
+		_color=new Color(0.9f,0.9f,0.9f);
+		graphics.SetColor(_color);
+		hp=100;
 	}
 	
 	// Update is called once per frame
 	void Update (){
+		//temppikoodia
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			OpenGate();
+		}
 
-		
+		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			CloseGate();	
+		}
 	}
 	
 	public void SetPos(int x,int y,bool face_up){
@@ -35,7 +69,36 @@ public class TowerMain : MonoBehaviour {
 				grid.SetPos(xx,yy,true);
 			}
 		}
-		
-		
+		gate_x=x;gate_y=y;
+	}
+	
+	public void OpenGate(){
+		grid.SetPos(gate_x,gate_y,false);
+		graphics.OpenPortti();
+	}
+	public void CloseGate(){
+		grid.SetPos(gate_x,gate_y,true);
+		graphics.ClosePortti();
+	}
+	
+	void StartBlinking(){
+		StopCoroutine("Blink");
+		graphics.SetColor(_color);
+		on_point=true;
+		StartCoroutine("Blink");
+	}
+	
+	bool on_point=false;
+	
+	IEnumerator Blink(){
+		for (int i=0;i<4;i++){
+			Color c=_color;
+			if (on_point)
+				c=new Color(1f,0,0);
+			on_point=!on_point;
+			
+			graphics.SetColor(c);
+			yield return new WaitForSeconds(0.1f);
+		}
 	}
 }

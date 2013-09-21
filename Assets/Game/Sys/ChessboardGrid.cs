@@ -16,7 +16,7 @@ public class ChessboardGrid : MonoBehaviour {
 	
 	//Update is called once per frame
 	void Update() {
-	
+		
 	}
 	
 	public bool GetPos(int x,int y){

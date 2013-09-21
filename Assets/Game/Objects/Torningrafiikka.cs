@@ -6,6 +6,7 @@ public class Torningrafiikka : MonoBehaviour
 {
 	
 	public GameObject Portti;
+	public GameObject Torni;
 	bool MoveUp = false;
 		
 	// Use this for initialization
@@ -19,7 +20,7 @@ public class Torningrafiikka : MonoBehaviour
 	{
 		
 		//temppikoodia
-		
+		/*
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			OpenPortti ();
 		}
@@ -27,7 +28,7 @@ public class Torningrafiikka : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			SmashPortti ();			
 		}
-		
+		*/
 		if (MoveUp == true) {
 		
 		
@@ -73,6 +74,14 @@ public class Torningrafiikka : MonoBehaviour
 			t.rigidbody.AddExplosionForce (350, transform.position + Vector3.up*-0.4f, 60);
 // does nuthin'			t.rigidbody.AddRelativeTorque (5000000, 5000000, 5000000);
 			
+		}
+	}
+	
+	public void SetColor(Color color){
+		for (int i = 0; i < 4; i++)
+		{
+			Transform c = Portti.transform.GetChild (i);
+			c.renderer.material.color=color;
 		}
 	}
 }

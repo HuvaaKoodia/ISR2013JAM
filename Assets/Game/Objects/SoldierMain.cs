@@ -4,20 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 
 public enum SoldierState{Ally,Enemy,Sick}
+public enum MovementType{Linear,Relative}
 
 public class SoldierMain : MonoBehaviour {
 	
 	public ChessboardGrid grid;
-	public GameObject graphics;
-	public TowerMain Target;
+	public GameObject graphics,graphics_offset;
+	public TowerMain EnemyTower,AllyTower,Target;
 	
 	public int x,y;
 	public SoldierState State;
 	
 	public bool DEAD{get;private set;}
 	public bool MOVING{get{return moving;}}
+	public bool AI{get;set;}
 	
-	int attack_power=10;
+	public bool Fleeing{get;private set;}
+	
+	MovementType movement_type=MovementType.Linear;
+	
+	public int attack_power=10;
+	
+	public 
 	
 	int hp;
 	public int HP{
@@ -30,18 +38,27 @@ public class SoldierMain : MonoBehaviour {
 			if (hp<=0){
 				hp=0;
 				DEAD=true;	
+				Destroy(graphics);
 			}
 		}
 	}
 	
-	// Use this for initialization
+	public void Flee(){
+		Fleeing=true;
+		Target=AllyTower;
+	}
+	
+	//Use this for initialization
 	void Start () {
 		hp=100;
+		Fleeing=false;
 	}
-
 	
+	public bool updated_already_this_turn=false;
+	bool in_an_update_ask_loop=false;
+
 	public void UpdateTurn(List<SoldierMain> all_soldiers){
-		
+		if (!AI||DEAD||updated_already_this_turn||in_an_update_ask_loop) return;
 		//check for enemies
 		for (int i=0;i<4;i++){
 			int xx=0,xy=0;
@@ -54,22 +71,26 @@ public class SoldierMain : MonoBehaviour {
 			if (i==3)
 				xy=-1;
 			
+			//attack
 			SoldierMain unit=grid.GetUnit(x+xx,y+xy);
 			if (unit!=null){
-				if (State!=unit.State){
+				bool attack=true;
+				if (Fleeing){
+					if (Subs.RandomPercent()>25){
+						attack=false;
+					}
+				}
+				if (attack&&State!=unit.State){
 					//attack
-					unit.Hit(attack_power,this);
+					Attack (unit);
 					return;
 				}
 			}
 		}
 		
 		//move
-
 		int mx=0,my=0;
 		if (State==SoldierState.Sick){
-			
-
 			float min=200202002;
 			SoldierMain closest=null;
 			foreach(var s in all_soldiers){
@@ -132,36 +153,47 @@ public class SoldierMain : MonoBehaviour {
 			int tx_s=(int)Mathf.Sign(tx);
 			
 			
-			//move towards target.
-			if (ty_a<8){
-				
-				if (ty_a==1){
-					//move only x
-					mx=tx_s;
-				}
-				else{
-					//move x
-					if (Subs.RandomPercent()<30){
+			{
+				//move towards target.
+				if (ty_a<8){
+					
+					if (ty_a==1){
+						//move only x
 						mx=tx_s;
 					}
 					else{
-						my=ty_s;
-					}
+						//move x
+						if (Subs.RandomPercent()<50){
+							mx=tx_s;
+						}
+						else{
+							my=ty_s;
+						}
+					}	
 				}
-						
-			}
-			else{
-				my=ty_s;
+				else{
+					my=ty_s;
+				}
 			}
 		}
 		
 		//move
+		if (grid.GetPos(x+mx,y+my)){
+			SoldierMain unit=grid.GetUnit(x+mx,y+my);
+			if (unit!=null&&unit.State==State){
+				in_an_update_ask_loop=true;
+				unit.UpdateTurn(all_soldiers);
+			}
+		}
+		
 		if (!grid.GetPos(x+mx,y+my)){
 			//Move 
 			//SetPos(x+mx,y+my);
 			Move(mx,my);
 		}
 		
+		updated_already_this_turn=true;
+		in_an_update_ask_loop=false;
 	}
 	
 		
@@ -192,46 +224,40 @@ public class SoldierMain : MonoBehaviour {
 			//StartBlinking();
 			StartBlinking();
 		}
-		
+	}
+	
+	void FixedUpdate(){
 		
 		if (moving){
-			float x_speed=0,z_speed=0;
 			
-			if (move_x<0){
-				x_speed=-1;
-				if (move_tx>transform.position.x){
-					moving=false;
-					SetWPos(x,y);
-				}
-			}
-			if (move_x>0){
-				x_speed=+1;
-				if (move_tx<=transform.position.x){
-					moving=false;
-					SetWPos(x,y);
-				}
-			}
-			if (move_y<0){
-				z_speed=-1;
-				if (move_ty>transform.position.z){
-					moving=false;
-					SetWPos(x,y);
-				}
-			}
-			if (move_y>0){
-				z_speed=+1;
-				if (move_ty<transform.position.z){
-					moving=false;
-					SetWPos(x,y);
-				}
+			float speed=1;
+			if (movement_type==MovementType.Relative){
+				speed=_dis_per_step;
 			}
 			
-			transform.position=new Vector3(transform.position.x+x_speed*Time.deltaTime,transform.position.y,transform.position.z+z_speed*Time.deltaTime);
+			var mv=move_v.normalized*speed*Time.deltaTime;
+			
+			transform.position=new Vector3(transform.position.x+mv.x,transform.position.y,transform.position.z+mv.y);
+			
+			move_length-=mv.magnitude;
+			
+			if (move_length<=0){
+				moving=false;
+				SetWPos(x,y);
+			}
 		}
+	}
+	
+	public void Attack(SoldierMain unit){
+		unit.Hit(attack_power,this);
+		graphics_offset.transform.rotation=Quaternion.LookRotation(new Vector3(unit.x-x,0,unit.y-y),Vector3.up)*Quaternion.AngleAxis(-90,Vector3.up);
+		StartCoroutine(AttackAnimation());
 	}
 	
 	public void Hit(int power,SoldierMain attacker){
 		HP-=power;
+		
+		if (DEAD) return;
 		
 		if (attacker.State==SoldierState.Sick){
 			if (Subs.RandomPercent()<25){
@@ -242,25 +268,46 @@ public class SoldierMain : MonoBehaviour {
 		StartBlinking();
 	}
 	
-	float move_tx,move_ty,move_x,move_y;
+	float move_tx,move_ty,move_length;
 	bool moving=false;
+	Vector2 move_v;
+	float _anim_length;
+	float _dis_per_step;
+	
+	
+	public void MoveTo(int wx,int wy){
+		Move (wx-x,wy-y);
+	}
 	
 	public void Move(int rx,int ry){
-		if (moving||grid.GetPos(x+rx,y+ry)) return;
+		if (moving) return;
 		StartCoroutine(MoveAnimation());
 		moving=true;
-		move_x=rx;
-		move_y=ry;
 	 	move_tx=x+rx+0.5f;
 		move_ty=y+ry+0.5f;
 		
+		move_v=new Vector2(rx,ry);
+		move_length=move_v.magnitude;
+		
 		SetGPos(x+rx,y+ry);
+		
+		_anim_length=graphics.animation.clip.length;
+		_dis_per_step=move_length/(_anim_length);
+	}
+	
+	IEnumerator AttackAnimation(){
+		
+		yield return new WaitForSeconds(Random.Range(0,250)*0.001f);
+		graphics.animation.Play(attack_animation);
 	}
 	
 	IEnumerator MoveAnimation(){
-		yield return new WaitForSeconds(Random.Range(0,250)*0.001f);
-		graphics.animation.Play ();
+		if (movement_type==MovementType.Linear)
+			yield return new WaitForSeconds(Random.Range(0,250)*0.001f);
+		graphics.animation.Play(move_animation);
 	}
+	
+	public string move_animation="Soldier_move",attack_animation="Soldier_attack";
 	
 	public void SetPos(int x,int y){
 		SetGPos(x,y);
@@ -308,7 +355,8 @@ public class SoldierMain : MonoBehaviour {
 
 	public void DIE ()
 	{
-		grid.ClearPos(x,y);
+		if (grid.GetUnit(x,y)==this) 
+			grid.ClearPos(x,y);
 		Destroy(gameObject);
 	}
 	
@@ -329,5 +377,9 @@ public class SoldierMain : MonoBehaviour {
 			
 		}
 		
+	}
+	
+	public void SetMovemenType(MovementType type){
+		movement_type=type;
 	}
 }
