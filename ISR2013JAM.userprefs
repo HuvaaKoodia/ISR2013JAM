@@ -1,9 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HahmoKoodi.cs">
     <Files>
       <File FileName="Assets\Torningrafiikka.cs" Line="34" Column="154" />
       <File FileName="Assets\HahmoKoodi.cs" Line="22" Column="30" />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\GameController.cs">
+    <Files>
+      <File FileName="Assets\Game\Objects\SoldierMain.cs" Line="182" Column="13" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="103" Column="21" />
+      <File FileName="Assets\Game\Sys\ChessboardGrid.cs" Line="27" Column="40" />
+>>>>>>> 0868761d2e04fc89a3f0a54823af663a7b695026
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
