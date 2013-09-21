@@ -14,8 +14,8 @@ public class ChessboardGrid : MonoBehaviour {
 		unit_grid=new SoldierMain[GridWidth,GridHeight];
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	//Update is called once per frame
+	void Update() {
 	
 	}
 	

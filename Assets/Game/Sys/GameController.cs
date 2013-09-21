@@ -46,9 +46,13 @@ public class GameController : MonoBehaviour {
 		
 		//enemy units
 		for (int i=0;i<10;i++){
-			int x=Random.Range(0,grid.GridWidth);
-			int y=Random.Range(grid.GridHeight/2+2,grid.GridHeight);
-		
+			int x,y;
+			do{
+				x=Random.Range(0,grid.GridWidth);
+				y=Random.Range(grid.GridHeight/2+2,grid.GridHeight);
+			}
+			while(grid.GetPos(x,y));
+			
 			var go=Instantiate(soldier_prefab,Vector3.zero,Quaternion.identity) as GameObject;
 			var sm=go.GetComponent<SoldierMain>();
 			

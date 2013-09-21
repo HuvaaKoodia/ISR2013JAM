@@ -58,7 +58,6 @@ public class Torningrafiikka : MonoBehaviour
 	
 	public void SmashPortti ()
 	{
-		
 		List<Transform> spikes=new List<Transform>();
 		
 		for (int i = 0; i < 4; i++)
