@@ -374,7 +374,7 @@ public class SoldierMain : MonoBehaviour {
 		else
 		if (state==SoldierState.Sick){
 			setColor(new Color(0.8f,0f,1f));
-			
+			Fleeing=false;
 		}
 		
 	}

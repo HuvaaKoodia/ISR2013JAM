@@ -8,8 +8,8 @@ public class GameController : MonoBehaviour {
 	public GameObject soldier_prefab,knight_prefab;
 	public TowerMain PlayerTower,EnemyTower;
 	public CameraMain player_camera;
-	public GameObject Tower1CameraPos,Tower2CameraPos;
 	
+	public HudManager hud_man;
 	
 	public KnightMain player;
 	List<SoldierMain> units,player_units,enemy_units;
@@ -131,21 +131,14 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 		
-		//DEV.temp
+		if (hud_man.DIALOGUE_ON) return;
 		
 		if (Input.GetKey(KeyCode.Space)){
 			PlayerActionDone();
 		}
 		
-		if (Input.GetKey(KeyCode.Alpha1)){
-			player_camera.MoveToCameraPos(Tower1CameraPos);
-		}
-		if (Input.GetKey(KeyCode.Alpha2)){
-			player_camera.MoveToCameraPos(Tower2CameraPos);
-		}
-		if (Input.GetKey(KeyCode.Alpha3)){
-			player_camera.MoveToPlayerPos();
-		}
+		//DEV.temp
+		
 		
 		if (Input.GetKeyDown(KeyCode.X)){
 			
