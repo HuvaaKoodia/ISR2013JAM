@@ -30,6 +30,7 @@ public class HudManager : MonoBehaviour {
 	void Update () {
 	
 		//temp
+		/*
 		if (Input.GetKeyDown(KeyCode.Alpha1)){
 			King1Talk(database.MeetingTheReverendKing);
 		}
@@ -40,7 +41,7 @@ public class HudManager : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
 			EndDialogue();
-		}
+		}*/
 	}
 	
 	public void King1Talk(DialogueData data){

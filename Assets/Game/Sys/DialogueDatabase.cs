@@ -101,7 +101,7 @@ public class DialogueDatabase : MonoBehaviour {
 		ThePlague=new DialogueData("What madness is this?");
 		
 		//Plague King vastaa
-		ans1=new DialogueData("You shall shout Europe at the sink and you shall enjoy it!", "ENDL");
+		ans1=new DialogueData("The plague is spreading!\nWe must be cautious", "ENDL");
 		ThePlague.AddAnswer (ans1);
 			
 		/* Vaihtoehtoinen dialogi

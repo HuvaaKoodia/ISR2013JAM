@@ -138,6 +138,11 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 		
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			Application.LoadLevel("SkeneMainMenu");
+		}
+		
+		
 		if (all_is_locked){
 			t.Update();
 			
@@ -150,6 +155,7 @@ public class GameController : MonoBehaviour {
 		if (GAMEOVER){
 			if (Input.GetKey(KeyCode.Return)){
 				//go to main menu
+				Application.LoadLevel("SkeneMainMenu");
 			}
 			return;
 		}
@@ -161,7 +167,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		//DEV.temp
-		
+		/*
 		if (Input.GetKeyDown(KeyCode.X)){
 			 EnemiesFlee();
 			
@@ -178,7 +184,7 @@ public class GameController : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.V)){
 			MeetKing();
-		}
+		}*/
 
 		//mouse input
 		
@@ -265,6 +271,13 @@ public class GameController : MonoBehaviour {
 				if (all_good){
 					units_moving=false;
 					turn_on=false;
+					
+					
+					if (player.Base.DEAD){
+						
+						GAMEOVER=true;
+						hud_man.gameover_hud.GAMEOVER("You are dead!");
+					}
 				}
 			}
 		}
