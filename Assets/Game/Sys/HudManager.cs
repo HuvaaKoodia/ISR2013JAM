@@ -29,11 +29,11 @@ public class HudManager : MonoBehaviour {
 	
 		//temp
 		if (Input.GetKeyDown(KeyCode.Alpha1)){
-			King1Talk(database.King1StartDialogue);
+			King1Talk(database.MeetingTheReverendKing);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha2)){
-			King2Talk(database.King1StartDialogue);
+			King2Talk(database.AtTheGateOfReverendKing);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
