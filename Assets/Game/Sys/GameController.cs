@@ -14,8 +14,10 @@ public class GameController : MonoBehaviour {
 	public KnightMain player;
 	List<SoldierMain> units,player_units,enemy_units;
 	
+	public bool GAMEOVER=false;
+	
 	// Use this for initialization
-	void Start () {
+	void Start (){
 		units=new List<SoldierMain>();
 		player_units=new List<SoldierMain>();
 		enemy_units=new List<SoldierMain>();
@@ -90,7 +92,12 @@ public class GameController : MonoBehaviour {
 			units.Add(sm);
 			sm.AI=true;
 		}
+		
+		all_is_locked=true;
+		t=new Timer(3000);
 	}
+	Timer t=new Timer();
+	bool all_is_locked=false;
 	bool turn_on=false,auto_turn;
 	
 	private bool GetMouseTilePos(out Vector2 tile){
@@ -131,7 +138,23 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 		
-		if (hud_man.DIALOGUE_ON) return;
+		if (all_is_locked){
+			t.Update();
+			
+			if (t.OVER){
+				hud_man.King1Talk(hud_man.database.King1StartDialogue);
+				all_is_locked=false;
+			}
+		}
+		
+		if (GAMEOVER){
+			if (Input.GetKey(KeyCode.Return)){
+				//go to main menu
+			}
+			return;
+		}
+		
+		if (hud_man.DIALOGUE_ON||all_is_locked) return;
 		
 		if (Input.GetKey(KeyCode.Space)){
 			PlayerActionDone();
@@ -139,31 +162,13 @@ public class GameController : MonoBehaviour {
 		
 		//DEV.temp
 		
-		
 		if (Input.GetKeyDown(KeyCode.X)){
 			
-			int a=enemy_units.Count/2;
-			for (int i=0;i<a;i++){
-				
-				SoldierMain unit;
-				int c=enemy_units.Count*4;
-				
-				do{
-					unit=enemy_units[Random.Range(0,enemy_units.Count)];
-					c--;
-					if (c<=0)
-						break;
-				}
-				while (unit.State==SoldierState.Sick);
-				
-				unit.SetState(SoldierState.Sick);
-			}
+			
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Z)){
-			foreach (var u in enemy_units){
-				u.Flee();
-			}
+			
 		}
 
 		//mouse input
@@ -175,8 +180,14 @@ public class GameController : MonoBehaviour {
 				
 				
 				if (GetMouseTilePos(out tile_pos)){
-					if (player.MoveTo((int)tile_pos.x,(int)tile_pos.y))
+					if (player.MoveTo((int)tile_pos.x,(int)tile_pos.y)){
+						
+						if (!playerInGateEnemy()&&!playerInGateEnemy()){
+							player_in_tower=false;
+						}
+						
 						PlayerActionDone();
+					}
 				}
 			}
 		}
@@ -248,5 +259,91 @@ public class GameController : MonoBehaviour {
 				}
 			}
 		}
+		
+		
+		
+		//GAME script
+		
+		if ( camp_state==0){
+			//start dialogue
+			if (enemy_units.Count<=100){
+				hud_man.King1Talk(hud_man.database.EnemiesFlee);
+				EnemiesFlee();
+				camp_state++;
+			}
+		}
+		if ( camp_state==1){
+			//start dialogue
+			if (enemy_units.Count<=50){
+				hud_man.King1Talk(hud_man.database.EnemiesPlague);
+				EnemiesPlague();
+				camp_state++;
+			}
+		}
+		
+		if (!player.Base.MOVING&&!player_in_tower){
+			if (playerInGateEnemy()){
+				//go to enemy king
+				player.transform.position=EnemyTower.player_pos.transform.position;
+				player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
+				hud_man.King2Talk(hud_man.database.King1StartDialogue);
+				player_in_tower=true;
+			}
+			
+			if (playerInGateAlly()){
+				//go to king
+				player.transform.position=PlayerTower.player_pos.transform.position;
+				player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
+				hud_man.King1Talk(hud_man.database.King1InTower);
+				player_in_tower=true;
+			}
+		}
 	}
+	bool player_in_tower;
+	int camp_state=0;
+	
+	bool playerInGateEnemy(){
+		return player.Base.x==EnemyTower.gate_x&&player.Base.y==EnemyTower.gate_y;
+	}
+	
+	bool playerInGateAlly(){
+		return player.Base.x==PlayerTower.gate_x&&player.Base.y==PlayerTower.gate_y;
+	}
+	
+	void EnemiesFlee(){
+
+		foreach (var u in enemy_units){
+				u.Flee();
+			}
+	}
+	
+	void EnemiesPlague(){
+		
+		int a=enemy_units.Count/2;
+			for (int i=0;i<a;i++){
+				
+				SoldierMain unit;
+				int c=enemy_units.Count*4;
+				
+				do{
+					unit=enemy_units[Random.Range(0,enemy_units.Count)];
+					c--;
+					if (c<=0)
+						break;
+				}
+				while (unit.State==SoldierState.Sick);
+				
+				unit.SetState(SoldierState.Sick);
+			}
+		
+	}
+
+	public void GOTO_PLAYERTOVER_BASE ()
+	{
+		//player.transform.position=new Vector3(PlayerTower.gate_x,0,PlayerTower.gate_y);
+		
+		player.Base.SetPos(PlayerTower.gate_x,PlayerTower.gate_y);
+		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(-90,Vector3.up);
+	}
+	
 }

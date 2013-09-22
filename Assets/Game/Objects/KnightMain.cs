@@ -55,8 +55,8 @@ public class KnightMain : MonoBehaviour {
 	
 	public bool legitMovePosition(int wx,int wy){
 		float dis= Vector2.Distance(new Vector2(Base.x,Base.y),new Vector2(wx,wy));
-		dis=Mathf.Round(dis);
-		//Debug.Log(dis);
+		dis=Mathf.Floor(dis);
+		Debug.Log(dis);
 		return dis<=2;
 	}
 

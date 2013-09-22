@@ -19,6 +19,8 @@ public class HudManager : MonoBehaviour {
 	
 	public GameObject answer_button_prefab;
 	
+	public GameOverHud gameover_hud;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -41,7 +43,7 @@ public class HudManager : MonoBehaviour {
 		}
 	}
 	
-	void King1Talk(DialogueData data){
+	public void King1Talk(DialogueData data){
 		ResetKings();
 		DIALOGUE_ON=true;
 		speech_bubble_anchor.side=UIAnchor.Side.TopRight;
@@ -57,7 +59,7 @@ public class HudManager : MonoBehaviour {
 		player_camera.MoveToCameraPos(Tower1CameraPos);
 	}
 	
-	void King2Talk(DialogueData data){
+	public void King2Talk(DialogueData data){
 		ResetKings();
 		DIALOGUE_ON=true;
 		speech_bubble_anchor.side=UIAnchor.Side.TopLeft;
@@ -113,11 +115,13 @@ public class HudManager : MonoBehaviour {
 				
 				go.transform.parent=speech_bubble_answer_buttons_parent.transform;
 				go.transform.localPosition=speech_bubble.transform.localPosition+answer_text_offset+Vector3.down*y_off;
-				y_off+=64;
+				
 				
 				ab.SetData(d);
 				ab.Base.appear();
 				ab.bps.controller=gameObject;
+				
+				y_off+=(int)ab.y_size+16;
 				
 				answer_buttons.Add(ab);
 			}	
@@ -127,6 +131,12 @@ public class HudManager : MonoBehaviour {
 	void AnswerButtonPressed(AnswerButtonMain ans){
 		
 		if (ans.Data.Type=="ENDL"){
+			EndDialogue();
+			ClearAnswers();
+			return;
+		}
+		
+		if (checkGameEvent(ans.Data.Type)){
 			EndDialogue();
 			ClearAnswers();
 			return;
@@ -147,5 +157,28 @@ public class HudManager : MonoBehaviour {
 	void EndDialogue(){
 		ResetKings();
 		player_camera.MoveToPlayerPos();
+	}
+	
+	bool checkGameEvent(string type){
+		if (type=="GAMEOVER_DEAD"){
+			
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("You are dead!");
+			return true;
+		}
+		
+		if (type=="GAMEOVER_GAVEUP"){
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("You gave up!");
+			return true;
+		}
+		
+		if (type=="LEAVE_PLAYERTOWER"){
+			
+			game_controller.GOTO_PLAYERTOVER_BASE();
+			return true;
+		}
+		
+		return false;
 	}
 }

@@ -7,6 +7,8 @@ public class AnswerButtonMain : MonoBehaviour {
 	public DialogueData Data;
 	public ButtonPressedScr bps;
 	
+	public float y_size;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -20,9 +22,14 @@ public class AnswerButtonMain : MonoBehaviour {
 	public void SetData(DialogueData data){
 		Data=data;
 		
-		Base.text_label.text=data.Text;
-		float size=Base.text_label.font.CalculatePrintedSize(data.Text,false,UIFont.SymbolStyle.Uncolored).x*Base.text_label.font.size;
-		Base.sprite.transform.localScale=new Vector3(Mathf.Max(300,size),Base.sprite.transform.localScale.y,0);
+		Base.text_label.text=Subs.autofit_text(data.Text,300,Base.text_label.font);
+		var size=Base.text_label.font.CalculatePrintedSize(Base.text_label.text,false,UIFont.SymbolStyle.Uncolored);
+		
+		
+		y_size=size.y*40;
+		Base.sprite.transform.localScale=new Vector3(300,y_size,0);
+		
+		
 	}
 	
 	

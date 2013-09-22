@@ -5,6 +5,8 @@ public class TowerMain : MonoBehaviour {
 	public int x,y,gate_x,gate_y;
 	public ChessboardGrid grid;
 	public Torningrafiikka graphics;
+	
+	public GameObject player_pos;
 	// Use this for initialization
 	
 	public bool DEAD;
