@@ -173,6 +173,43 @@ public class HudManager : MonoBehaviour {
 			return true;
 		}
 		
+		if (type== "GAMEOVER_PLAGUEKINGSURRENDER"){
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("The Plague King surrenders!");
+			
+			ResetKings();
+			ClearAnswers();
+			return false;
+		}
+		
+		if (type== "GAMEOVER_PLAGUEKINGDEAD"){
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("The Plague King Is Defeated!");
+			
+			ResetKings();
+			ClearAnswers();
+			return false;
+		}
+		
+		if (type== "GAMEOVER_KINGDEAD"){
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("You dethroned the king!");
+			
+			
+			ResetKings();
+			ClearAnswers();
+			return false;
+		}
+		
+		if (type== "GAMEOVER_EVILALLIANCE"){
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("An evil alliance is formed!");
+			
+			ResetKings();
+			ClearAnswers();
+			return false;
+		}
+		//
 		if (type=="LEAVE_PLAYERTOWER"){
 			
 			game_controller.GOTO_PLAYERTOVER_BASE();

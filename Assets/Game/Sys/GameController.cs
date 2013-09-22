@@ -142,7 +142,7 @@ public class GameController : MonoBehaviour {
 			t.Update();
 			
 			if (t.OVER){
-				hud_man.King1Talk(hud_man.database.King1StartDialogue);
+				hud_man.King1Talk(hud_man.database.TheBattleBegins);
 				all_is_locked=false;
 			}
 		}
@@ -163,12 +163,21 @@ public class GameController : MonoBehaviour {
 		//DEV.temp
 		
 		if (Input.GetKeyDown(KeyCode.X)){
-			
+			 EnemiesFlee();
 			
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Z)){
+			EnemiesPlague();
+		}
+		
+		if (Input.GetKeyDown(KeyCode.C)){
+			MeetEnemyKing();
 			
+		}
+		
+		if (Input.GetKeyDown(KeyCode.V)){
+			MeetKing();
 		}
 
 		//mouse input
@@ -267,7 +276,7 @@ public class GameController : MonoBehaviour {
 		if ( camp_state==0){
 			//start dialogue
 			if (enemy_units.Count<=100){
-				hud_man.King1Talk(hud_man.database.EnemiesFlee);
+				
 				EnemiesFlee();
 				camp_state++;
 			}
@@ -275,30 +284,41 @@ public class GameController : MonoBehaviour {
 		if ( camp_state==1){
 			//start dialogue
 			if (enemy_units.Count<=50){
-				hud_man.King1Talk(hud_man.database.EnemiesPlague);
+				
 				EnemiesPlague();
 				camp_state++;
 			}
 		}
 		
 		if (!player.Base.MOVING&&!player_in_tower){
-			if (playerInGateEnemy()){
-				//go to enemy king
-				player.transform.position=EnemyTower.player_pos.transform.position;
-				player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
-				hud_man.King2Talk(hud_man.database.King1StartDialogue);
-				player_in_tower=true;
-			}
+			
 			
 			if (playerInGateAlly()){
 				//go to king
-				player.transform.position=PlayerTower.player_pos.transform.position;
-				player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
-				hud_man.King1Talk(hud_man.database.King1InTower);
-				player_in_tower=true;
+				MeetKing();
+			}
+			
+			if (playerInGateEnemy()){
+				//go to enemy king
+				MeetEnemyKing();
 			}
 		}
 	}
+	
+	void MeetKing(){
+		player.transform.position=PlayerTower.player_pos.transform.position;
+		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
+		hud_man.King1Talk(hud_man.database.MeetingTheReverendKing);
+		player_in_tower=true;
+	}
+	
+	void MeetEnemyKing(){
+		player.transform.position=EnemyTower.player_pos.transform.position;
+		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
+		hud_man.King2Talk(hud_man.database.MeetingThePlagueKing);
+		player_in_tower=true;
+	}
+	
 	bool player_in_tower;
 	int camp_state=0;
 	
@@ -311,14 +331,14 @@ public class GameController : MonoBehaviour {
 	}
 	
 	void EnemiesFlee(){
-
+		hud_man.King1Talk(hud_man.database.TheTideTurns);
 		foreach (var u in enemy_units){
 				u.Flee();
 			}
 	}
 	
 	void EnemiesPlague(){
-		
+		hud_man.King1Talk(hud_man.database.ThePlague);
 		int a=enemy_units.Count/2;
 			for (int i=0;i<a;i++){
 				

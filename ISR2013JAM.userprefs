@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\DialogueDatabase.cs">
     <Files>
-      <File FileName="Assets\Game\Sys\GameController.cs" Line="79" Column="4" />
-      <File FileName="Assets\Game\Sys\HudManager.cs" Line="46" Column="5" />
-      <File FileName="Assets\Game\Sys\DialogueDatabase.cs" Line="267" Column="6" />
-      <File FileName="Assets\AnswerButtonMain.cs" Line="9" Column="2" />
+      <File FileName="Assets\Game\Sys\DialogueDatabase.cs" Line="115" Column="5" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="165" Column="35" />
+      <File FileName="Assets\Game\Sys\HudManager.cs" Line="162" Column="35" />
+      <File FileName="Assets\AnswerButtonMain.cs" Line="23" Column="13" />
       <File FileName="Assets\Game\Objects\KnightMain.cs" Line="37" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>

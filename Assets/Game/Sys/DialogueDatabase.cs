@@ -8,35 +8,44 @@ public class DialogueDatabase : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		
-		DialogueData ans1,ans2,ans3,ans4,ka1,ka2,ka3;
+		DialogueData ans1,ans2,ans3,ka1,ka2,ka3;
 
 		//start dialogue 1
-		TheBattleBegins=new DialogueData("The time has come!\n\nSlay this vile king and his army.");
+		TheBattleBegins=new DialogueData("The time has come!\n\nSlay this vile king and his army.\nThis is thy destiny!");
 		
 
-		ans1=new DialogueData("Will do.");
-		King1StartDialogue.AddAnswer(ans1);
-		ans2=new DialogueData("Can we postpone this?");
-		King1StartDialogue.AddAnswer(ans2);
-		ans3=new DialogueData("I.. I..");	
-		King1StartDialogue.AddAnswer(ans3);
-
-		/*ans1=new DialogueData("I will bring you the top most part of this false King.");
+		ans1=new DialogueData("I will bring you the top most part of this false King.");
+		/*
 		ans2=new DialogueData("Checkers will be pointy with the Chips of the Plague Pawns.");
 		ans3=new DialogueData("We shall force the Plague King to surrender.");
 		*/
+		
+		ans2=new DialogueData("Can we postpone this?");
+
+		ans3=new DialogueData("I.. I..");	
+
+		
 		TheBattleBegins.AddAnswer(ans1);
 		TheBattleBegins.AddAnswer(ans2);
 		TheBattleBegins.AddAnswer(ans3);
 		
-		/*ka1=new DialogueData("The day will be ours. Charge!");
+		ka1=new DialogueData("Splendid!");
+		ans1.AddAnswer(ka1);
+				/*ka1=new DialogueData("The day will be ours. Charge!"); random
 		ans1.AddAnswer(ka1);
 		ka1=new DialogueData("Let strength be grant, so the world might be mended.");
 		ans2.AddAnswer(ka1);
 		ka1=new DialogueData("It matters not, His Pestilence shall warm my house as a log.");
 		ans3.AddAnswer(ka1);*/
 		
+		
+		ka1=new DialogueData("Absolutely not!\n\nHave at them!");
+		ans2.AddAnswer(ka1);
+		ka1=new DialogueData("What is it!\nSpit it out!!");
+		ans3.AddAnswer(ka1);
+		
 
+		
 		ka1.AddAnswer(new DialogueData("Nothing...","ENDL"));
 		ans1=new DialogueData("I cannot do this what you ask of me.");
 		ka1.AddAnswer(ans1);
@@ -183,11 +192,11 @@ public class DialogueDatabase : MonoBehaviour {
 		MeetingThePlagueKing=new DialogueData("You stand before the Plague King.");
 		
 		ans1=new DialogueData("Plague King, meet sword.");
-		ans2=new DialogueData("Surrender and you shall be mostly spared. Although we might have to belt sand some of your worst edge off, though.");
+		ans2=new DialogueData("Surrender and you shall be mostly spared. We might have to sand some of your worst edge off, though.");
 		ans3=new DialogueData("This plague of yours is a powerful tool. We could take over the world together.");
 		
-		ka1=new DialogueData("I should have eaten more sausage when I had the chance.", "ENDL");
-		ka2=new DialogueData("All I ever wanted was someone to talk to. So sad/confused atm.", "ENDL");
+		ka1=new DialogueData("I should have eaten more sausages when I had the chance.");
+		ka2=new DialogueData("All I ever wanted was someone to talk to. So sad/confused atm.");
 		ka3=new DialogueData("I will give you 49% of company stocks. Let’s bond orally.");
 		
 		MeetingThePlagueKing.AddAnswer (ans1);
@@ -204,17 +213,25 @@ public class DialogueDatabase : MonoBehaviour {
 		ka3=new DialogueData ("*Evil laughter*", "ENDL");
 		ans3.AddAnswer (ka3);
 		
-		//Meeting the Reverend King
+		ans1=new DialogueData("*Malicious neighing*","GAMEOVER_EVILALLIANCE");
+		ka3.AddAnswer (ans1);
 		
+		ans1=new DialogueData("You can ruminate more on that in the dungeons.", "GAMEOVER_PLAGUEKINGSURRENDER");
+		ka2.AddAnswer(ans1);
+		
+		ans1=new DialogueData("*Stab*","GAMEOVER_PLAGUEKINGDEAD");
+		ka1.AddAnswer(ans1);
+		
+		//Meeting the Reverend King
 		MeetingTheReverendKing=new DialogueData("That gate cost more than my crown. What do you think you're doing?");
 			
 		ans1=new DialogueData("Nice view, boss.");
 		ans2=new DialogueData("I don’t feel like this job is for me. I dream of green pastures and galloping.");
 		ans3=new DialogueData("The King is dead, long live the King.");
 		
-		ka1=new DialogueData("It was... Enough of this horseplay. Now go back and do my bidding.");
-		ka2=new DialogueData("Surely you have the strength to carry through. After the Plague King has been snuffed out all us will be free.", "ENDL");
-		ka3=new DialogueData("That glimmer in your eyes seems conclusive. By slaying me, you are only exchanging obligations to slavery.");
+		ka1=new DialogueData("It is... But enough of this horseplay! Now go back and do my bidding.");
+		ka2=new DialogueData("Surely you have the strength to carry through.\n\nAfter the Plague King has been snuffed out all of us will be free.", "ENDL");
+		ka3=new DialogueData("That glimmer in your eyes seems conclusive.\n\nBy slaying me, you are only exchanging obligations to slavery.");
 		
 		MeetingTheReverendKing.AddAnswer (ans1);
 		MeetingTheReverendKing.AddAnswer (ans2);
@@ -227,7 +244,7 @@ public class DialogueDatabase : MonoBehaviour {
 		//ans1=new DialogueData("It was... Enough of this horseplay. Now go back and do my bidding.");
 		//ka1.AddAnswer (ans1);
 		
-		ans1=new DialogueData("Sure thing boss. Have a nice day.", "ENDL");
+		ans1=new DialogueData("Sure thing boss. Have a nice day.", "LEAVE_PLAYERTOWER");
 		ka1.AddAnswer (ans1);
 		var no_appreciation=new DialogueData("I think my work is not appreciated. Actually, I’d make a much better king. Maybe violence IS a solution? Mr. Pointy hat, have a taste of my blade. ");
 		ka1.AddAnswer (no_appreciation);
@@ -235,9 +252,17 @@ public class DialogueDatabase : MonoBehaviour {
 		ka1=new DialogueData("From where the sun now stands I will fight no more forever.");
 		no_appreciation.AddAnswer (ka1);
 		
-		ans1=new DialogueData("You're right. But don't call me shirley.","ENDL");
+		ans1=new DialogueData("You're right. But don't call me shirley.","LEAVE_PLAYERTOWER");
 		ka2.AddAnswer(ans1);
 		ka2.AddAnswer(no_appreciation);
+		
+		ans1=new DialogueData("So you say.");
+		ka3.AddAnswer(ans1);
+		
+		ans1.AddAnswer(ka1);
+		
+		ans1=new DialogueData("*Stab*","GAMEOVER_KINGDEAD");
+		ka1.AddAnswer(ans1);
 		
 		//Slaying the Plague King
 		
