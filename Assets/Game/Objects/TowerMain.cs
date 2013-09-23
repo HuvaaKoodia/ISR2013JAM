@@ -9,6 +9,9 @@ public class TowerMain : MonoBehaviour {
 	public GameObject player_pos;
 	// Use this for initialization
 	
+	public SoldierState State;
+	
+	
 	public bool DEAD;
 	int hp;
 	public int HP{
@@ -102,5 +105,10 @@ public class TowerMain : MonoBehaviour {
 			graphics.SetColor(c);
 			yield return new WaitForSeconds(0.1f);
 		}
+	}
+
+	public bool IsAlly ()
+	{
+		return State==SoldierState.Ally;
 	}
 }

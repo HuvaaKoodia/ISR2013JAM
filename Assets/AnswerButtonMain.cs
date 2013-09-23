@@ -25,7 +25,7 @@ public class AnswerButtonMain : MonoBehaviour {
 		Base.text_label.text=Subs.autofit_text(data.Text,300,Base.text_label.font);
 		var size=Base.text_label.font.CalculatePrintedSize(Base.text_label.text,false,UIFont.SymbolStyle.Uncolored);
 		
-		y_size=size.y*40;
+		y_size=6+size.y*Base.text_label.font.size+6;
 		Base.sprite.transform.localScale=new Vector3(310,y_size,0);
 		Base.GetComponent<BoxCollider>().size=new Vector3(310,y_size,0);
 		Base.GetComponent<BoxCollider>().center=new Vector3(310/2,-y_size/2,0);

@@ -26,4 +26,9 @@ public class KingMain : MonoBehaviour {
 		graphics.transform.localPosition=base_pos;
 		graphics.transform.localRotation=Quaternion.identity;
 	}
+
+	public void ZOMBIFY ()
+	{
+		graphics.renderer.material.color=GameController.ZombieColor;
+	}
 }

@@ -28,7 +28,6 @@ public class KnightMain : MonoBehaviour {
 		}
 		return false;
 	}
-	
 
 	public bool AttackTo(int wx,int wy){
 		if (Base.grid.GetPos(wx,wy)&&legitMovePosition(wx,wy)){
@@ -58,6 +57,26 @@ public class KnightMain : MonoBehaviour {
 		dis=Mathf.Floor(dis);
 		Debug.Log(dis);
 		return dis<=2;
+	}
+	
+	public bool IsSick(){
+		return Base.State==SoldierState.Sick;;
+	}
+	
+	
+	//DEV:TEMP
+	
+	public bool MoveHAX(int rx,int ry){
+		if (!Base.grid.GetPos(Base.x+rx,Base.y+ry)){
+			//move
+			Base.Move(rx,ry);
+			Base.graphics.transform.rotation=Quaternion.LookRotation(new Vector3(rx,0,ry),Vector3.up)*Quaternion.AngleAxis(-90,Vector3.up);
+			return true;
+		}
+		return false;
+	}
+	public bool MoveToHAX(int wx,int wy){
+		return MoveHAX(wx-Base.x,wy-Base.y);
 	}
 
 }

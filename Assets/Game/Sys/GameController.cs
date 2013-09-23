@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 	
+	public static Color ZombieColor=new Color(0.8f,0f,1f);
+	
+	
 	public ChessboardGrid grid;
 	public GameObject soldier_prefab,knight_prefab;
 	public TowerMain PlayerTower,EnemyTower;
@@ -14,7 +17,19 @@ public class GameController : MonoBehaviour {
 	public KnightMain player;
 	List<SoldierMain> units,player_units,enemy_units;
 	
-	public bool GAMEOVER=false;
+	bool gameover=false;
+	
+	public bool GAMEOVER{
+		get{
+			return gameover;
+		}
+		set{
+			gameover=value;
+			if (gameover){
+				player_camera.LOCK_INPUT=true;
+			}
+		}
+	}
 	
 	// Use this for initialization
 	void Start (){
@@ -94,7 +109,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		all_is_locked=true;
-		t=new Timer(3000);
+		t=new Timer(2000);
 	}
 	Timer t=new Timer();
 	bool all_is_locked=false;
@@ -142,7 +157,6 @@ public class GameController : MonoBehaviour {
 			Application.LoadLevel("SkeneMainMenu");
 		}
 		
-		
 		if (all_is_locked){
 			t.Update();
 			
@@ -167,32 +181,63 @@ public class GameController : MonoBehaviour {
 		}
 		
 		//DEV.temp
-		/*
+		
+		if (Input.GetKeyDown(KeyCode.M)){
+			
+			if (!turn_on&&player!=null){
+				Vector2 tile_pos;
+				
+				if (GetMouseTilePos(out tile_pos)){
+					if (player.MoveToHAX((int)tile_pos.x,(int)tile_pos.y)){
+						
+						if (!playerInGateEnemy()&&!playerInGateEnemy()){
+							player_in_tower=false;
+						}
+						
+						PlayerActionDone();
+					}
+				}
+			}
+		}
+	
 		if (Input.GetKeyDown(KeyCode.X)){
 			 EnemiesFlee();
-			
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Z)){
 			EnemiesPlague();
 		}
 		
+		if (Input.GetKeyDown(KeyCode.B)){
+			player.Base.SetState(SoldierState.Sick);
+		}
+		
 		if (Input.GetKeyDown(KeyCode.C)){
 			MeetEnemyKing();
 			
 		}
-		
 		if (Input.GetKeyDown(KeyCode.V)){
 			MeetKing();
-		}*/
+		}
 
 		//mouse input
 		
 		if (Input.GetMouseButtonDown(0)){
 			
 			if (!turn_on&&player!=null){
+				TowerMain torni;
 				Vector2 tile_pos;
 				
+				if (GetMouseTower(out torni)){
+					if (!torni.DEAD&&player.legitMovePosition(torni.gate_x,torni.gate_y)){
+						if (torni.IsAlly()){
+							TalkToKing();
+						}
+						else{
+							TalkToEnemyKing();
+						}
+					}
+				}
 				
 				if (GetMouseTilePos(out tile_pos)){
 					if (player.MoveTo((int)tile_pos.x,(int)tile_pos.y)){
@@ -210,7 +255,6 @@ public class GameController : MonoBehaviour {
 		if (Input.GetMouseButtonDown(1)){
 			
 			if (!turn_on&&player!=null){
-				
 				TowerMain torni;
 				Vector2 tile_pos;
 				
@@ -239,7 +283,6 @@ public class GameController : MonoBehaviour {
 						s.UpdateTurn(units);
 					}
 					//destroy units
-					
 					for (int i=0;i<units.Count;i++){
 						var s=units[i];
 		
@@ -285,43 +328,49 @@ public class GameController : MonoBehaviour {
 		
 		
 		//GAME script
-		
-		if ( camp_state==0){
-			//start dialogue
-			if (enemy_units.Count<=100){
-				
-				EnemiesFlee();
-				camp_state++;
+		if (!turn_on){
+			if ( camp_state==0){
+				//start dialogue
+				if (enemy_units.Count<=100){
+					
+					EnemiesFlee();
+					camp_state++;
+				}
+			}
+			if ( camp_state==1){
+				//start dialogue
+				if (enemy_units.Count<=50){
+					
+					EnemiesPlague();
+					camp_state++;
+				}
 			}
 		}
-		if ( camp_state==1){
-			//start dialogue
-			if (enemy_units.Count<=50){
-				
-				EnemiesPlague();
-				camp_state++;
-			}
-		}
 		
+		//goto tower
 		if (!player.Base.MOVING&&!player_in_tower){
-			
-			
-			if (playerInGateAlly()){
-				//go to king
-				MeetKing();
+				
+				if (playerInGateAlly()){
+					//go to king
+					MeetKing();
+				}
+				
+				if (playerInGateEnemy()){
+					//go to enemy king
+					MeetEnemyKing();
+				}
 			}
-			
-			if (playerInGateEnemy()){
-				//go to enemy king
-				MeetEnemyKing();
-			}
-		}
 	}
 	
 	void MeetKing(){
 		player.transform.position=PlayerTower.player_pos.transform.position;
 		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
-		hud_man.King1Talk(hud_man.database.MeetingTheReverendKing);
+		
+		if (player.IsSick()){
+			hud_man.King1Talk(hud_man.database.ZOMBIE_MeetingTheReverendKing);
+		}
+		else
+			hud_man.King1Talk(hud_man.database.MeetingTheReverendKing);
 		player_in_tower=true;
 	}
 	
@@ -330,6 +379,17 @@ public class GameController : MonoBehaviour {
 		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
 		hud_man.King2Talk(hud_man.database.MeetingThePlagueKing);
 		player_in_tower=true;
+	}
+	
+	void TalkToKing(){
+		if (!player.IsSick()){
+			hud_man.King1Talk(hud_man.database.AtTheGateOfReverendKing);
+		}
+	}
+	void TalkToEnemyKing(){
+		if (!player.IsSick()){
+			hud_man.King2Talk(hud_man.database.AtTheGateOfPlagueKing);
+		}
 	}
 	
 	bool player_in_tower;
@@ -373,10 +433,14 @@ public class GameController : MonoBehaviour {
 
 	public void GOTO_PLAYERTOVER_BASE ()
 	{
-		//player.transform.position=new Vector3(PlayerTower.gate_x,0,PlayerTower.gate_y);
-		
+
 		player.Base.SetPos(PlayerTower.gate_x,PlayerTower.gate_y);
 		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(-90,Vector3.up);
+	}
+	public void GOTO_ENEMYTOVER_BASE ()
+	{
+		player.Base.SetPos(EnemyTower.gate_x,EnemyTower.gate_y);
+		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(90,Vector3.up);
 	}
 	
 }

@@ -12,7 +12,9 @@ public class CameraMain : MonoBehaviour {
 	
 	Vector3 player_pos;
 	Quaternion player_angle;
-
+	
+	public bool LOCK_INPUT;
+	
 	void Start (){
 		setDistance(distance);
 		
@@ -31,46 +33,60 @@ public class CameraMain : MonoBehaviour {
 			return;
 		}
 		
+					
+		
 		if (moving_to_obj){
-			float speed=cam_obj_move_speed;
-		
-			//speed=Mathf.Max(1,speed);
 			
-			speed=speed*Time.deltaTime;
-			transform.position+=cam_obj_direction*speed;
-			cam_obj_dis-=speed;
-			
-			cam_obj_move_speed-=Time.deltaTime*cam_obj_dis;
-		
+			bool moving_done=false,rotation_done=false;
 			if (cam_obj_dis<=0){
 				if (moving_to_cam_object){
 					in_orbit=true;
 					moving_to_cam_object=false;
-					moving_to_obj=false;
 				}
 				if (moving_to_player){
 					moving_to_player=false;
-					moving_to_obj=false;
 				}
+				moving_done=true;
+			}
+			//move
+			if (!moving_done){
+				float speed=cam_obj_move_speed;
+	
+				speed=speed*Time.deltaTime;
+				transform.position+=cam_obj_direction*speed;
+				cam_obj_dis-=speed;
+				
+				cam_obj_move_speed-=Time.deltaTime*cam_obj_dis;
 			}
 			
-			transform.rotation=Quaternion.Slerp(transform.rotation,rotation_target,cam_obj_rot_diff*Time.deltaTime);
+			if (Vector3.Distance(transform.rotation.eulerAngles,rotation_target.eulerAngles)<0.1f){
+				rotation_done=true;
+				transform.rotation=rotation_target;
+			}
+			
+			//rotate
+			if (!rotation_done)
+				transform.rotation=Quaternion.Slerp(transform.rotation,rotation_target,cam_obj_rot_diff*Time.deltaTime);
+			
+			if (rotation_done&&moving_done)
+				moving_to_obj=false;
 			
 			return;
 		}
 		
-	 	if (Input.GetMouseButton(2)){
-			Rotate();
-		}
-				
-		var sw=Input.GetAxis("Mouse ScrollWheel");
-		if (sw!=0){
-			float multi=1f;
-			if (Input.GetKey(KeyCode.LeftShift)){
-				multi=3f;
+		if (!LOCK_INPUT){
+		 	if (Input.GetMouseButton(2)){
+				Rotate();
 			}
-
-			setDistanceMulti(-sw*scroll_speed*multi);
+					
+			var sw=Input.GetAxis("Mouse ScrollWheel");
+			if (sw!=0){
+				float multi=1f;
+				if (Input.GetKey(KeyCode.LeftShift)){
+					multi=3f;
+				}
+				setDistanceMulti(-sw*scroll_speed*multi);
+			}
 		}
 		
 		if (distance!=new_distance){
@@ -144,7 +160,6 @@ public class CameraMain : MonoBehaviour {
 		in_orbit=false;
 		moving_to_cam_object=false;
 		
-		
 		moving_to_obj=true;
 		moving_to_player=true;
 		cam_obj_pos=player_pos;
@@ -155,8 +170,17 @@ public class CameraMain : MonoBehaviour {
 		
 		cam_obj_move_speed=cam_obj_odis+cam_obj_min_speed;
 		
-		cam_obj_rot_diff=4;
-		
 		rotation_target=player_angle;
+		
+		cam_obj_rot_diff=5;
+		/*
+		cam_obj_rot_diff=Vector3.Angle(transform.rotation.eulerAngles,rotation_target.eulerAngles);
+		Debug.Log(cam_obj_rot_diff);
+		cam_obj_rot_diff*=Mathf.Deg2Rad;
+		Debug.Log(cam_obj_rot_diff);
+		cam_obj_rot_diff++;
+	
+		*/
 	}
+	
 }

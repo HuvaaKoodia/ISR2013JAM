@@ -12,13 +12,12 @@ public class GameOverHud : MonoBehaviour {
 		gameover_label.alpha=0;
 		desc_label.alpha=0;
 		other_label.alpha=0;
-		sprite.transform.localScale=new Vector3(Screen.width+64,Screen.height+64,0);
+		//sprite.transform.localScale=new Vector3(Screen.width+64,Screen.height+64,0);
+		sprite.transform.localScale=new Vector3(Screen.width*2+64,Screen.height*2+64,0);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
-	}
+	void Update () {}
 	
 	public void GAMEOVER(string description){
 		StartCoroutine(FadeAlpha());

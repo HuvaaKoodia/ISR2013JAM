@@ -30,18 +30,19 @@ public class HudManager : MonoBehaviour {
 	void Update () {
 	
 		//temp
-		/*
+		
 		if (Input.GetKeyDown(KeyCode.Alpha1)){
-			King1Talk(database.MeetingTheReverendKing);
+			King1Talk(database.ZOMBIE_MeetingTheReverendKing);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha2)){
-			King2Talk(database.AtTheGateOfReverendKing);
+			King2Talk(database.ZOMBIE_MeetingThePlagueKing);
+			//King2Talk(database.AtTheGateOfReverendKing);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
 			EndDialogue();
-		}*/
+		}
 	}
 	
 	public void King1Talk(DialogueData data){
@@ -52,8 +53,10 @@ public class HudManager : MonoBehaviour {
 		speech_bubble.setPosition(king1_speech_pos);
 		speech_bubble.appear();
 		
-		speech_bubble.setText(data.Text);
-		setAnswers(data);
+		//speech_bubble.setText(data.Text);
+		//setAnswers(data);
+		
+		ChangeDialogue(data);
 		
 		king1.StartTalking();
 		
@@ -78,7 +81,13 @@ public class HudManager : MonoBehaviour {
 	
 	void ChangeDialogue(DialogueData data){
 		speech_bubble.setText(data.Text);
-		setAnswers(data);
+		
+		if (data.hasAnswers()){
+			setAnswers(data);
+		}
+		else{
+			setAnswers(database.EndDialogueData);
+		}
 	}
 	
 	void ResetKings(){
@@ -102,7 +111,6 @@ public class HudManager : MonoBehaviour {
 	}
 	
 	void setAnswers(DialogueData data){
-		
 		ClearAnswers();
 		
 		if (data==null) return;
@@ -116,7 +124,6 @@ public class HudManager : MonoBehaviour {
 				
 				go.transform.parent=speech_bubble_answer_buttons_parent.transform;
 				go.transform.localPosition=speech_bubble.transform.localPosition+answer_text_offset+Vector3.down*y_off;
-				
 				
 				ab.SetData(d);
 				ab.Base.appear();
@@ -138,21 +145,28 @@ public class HudManager : MonoBehaviour {
 		}
 		
 		if (checkGameEvent(ans.Data.Type)){
-			EndDialogue();
+			ResetKings();
 			ClearAnswers();
 			return;
 		}
 		
+		if (!ans.Data.hasAnswers()){
+			Debug.LogError("No further anwers in "+ans.Data.Text);
+			return;
+		}
+		
 		var a=ans.Data.answers[0];
-		if(a!=null){//DEV.random data if many?
-			ChangeDialogue(a);
+		ChangeDialogue(a);
+		
+		/*if(a!=null){//DEV.random data if many?
+			
 			if (!a.hasAnswers()){
 				setAnswers(database.EndDialogueData);
 			}
 		}
 		else{
 			setAnswers(database.EndDialogueData);
-		}
+		}*/
 	}
 	
 	void EndDialogue(){
@@ -161,6 +175,7 @@ public class HudManager : MonoBehaviour {
 	}
 	
 	bool checkGameEvent(string type){
+		//gameover events
 		if (type=="GAMEOVER_DEAD"){
 			
 			game_controller.GAMEOVER=true;
@@ -171,6 +186,7 @@ public class HudManager : MonoBehaviour {
 		if (type=="GAMEOVER_GAVEUP"){
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("You gave up!");
+			EndDialogue();
 			return true;
 		}
 		
@@ -178,42 +194,55 @@ public class HudManager : MonoBehaviour {
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("The Plague King surrenders!");
 			
-			ResetKings();
-			ClearAnswers();
-			return false;
+			return true;
 		}
 		
 		if (type== "GAMEOVER_PLAGUEKINGDEAD"){
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("The Plague King Is Defeated!");
-			
-			ResetKings();
-			ClearAnswers();
-			return false;
+			return true;
 		}
 		
 		if (type== "GAMEOVER_KINGDEAD"){
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("You dethroned the king!");
 			
-			
-			ResetKings();
-			ClearAnswers();
-			return false;
+			return true;
 		}
 		
 		if (type== "GAMEOVER_EVILALLIANCE"){
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("An evil alliance is formed!");
-			
-			ResetKings();
-			ClearAnswers();
-			return false;
+
+			return true;
 		}
-		//
+		
+		if (type== "GAMEOVER_ZOMBIEKING"){
+			king1.ZOMBIFY();
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("Regal brains are tasty!");
+			
+			return true;
+		}
+		
+		if (type== "GAMEOVER_ZOMBIEPLAGUEKING"){
+			king2.ZOMBIFY();
+			game_controller.GAMEOVER=true;
+			gameover_hud.GAMEOVER("The Plague cannot be stopped!");//DEV.temp
+			return true;
+		}
+		
+		//neutral events
 		if (type=="LEAVE_PLAYERTOWER"){
 			
 			game_controller.GOTO_PLAYERTOVER_BASE();
+			EndDialogue();
+			return true;
+		}
+		if (type=="LEAVE_ENEMYTOWER"){
+			
+			game_controller.GOTO_ENEMYTOVER_BASE();
+			EndDialogue();
 			return true;
 		}
 		

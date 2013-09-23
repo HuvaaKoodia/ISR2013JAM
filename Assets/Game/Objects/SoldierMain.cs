@@ -199,31 +199,28 @@ public class SoldierMain : MonoBehaviour {
 		
 	// Update is called once per frame
 	void Update () {
-			
+		
+		/*
 		if (Input.GetKeyDown(KeyCode.W)){
-			//StartBlinking();
 			Move(-1,0);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.S)){
-			//StartBlinking();
 			Move(1,0);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.A)){
-			//StartBlinking();
 			Move(0,-1);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.D)){
-			//StartBlinking();
 			Move(0,1);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.F)){
 			//StartBlinking();
 			StartBlinking();
-		}
+		}*/
 	}
 	
 	void FixedUpdate(){
@@ -373,7 +370,7 @@ public class SoldierMain : MonoBehaviour {
 		}
 		else
 		if (state==SoldierState.Sick){
-			setColor(new Color(0.8f,0f,1f));
+			setColor(GameController.ZombieColor);
 			Fleeing=false;
 		}
 		
