@@ -17,11 +17,11 @@ public class KingMain : MonoBehaviour {
 	}
 	
 	public void StartTalking(){
-		graphics.animation.Play();
+		graphics.animation.Play("King_talk");
 	}
 	
 	public void StopTalking(){
-		
+		if (is_dead) return;
 		graphics.animation.Stop();
 		graphics.transform.localPosition=base_pos;
 		graphics.transform.localRotation=Quaternion.identity;
@@ -30,5 +30,13 @@ public class KingMain : MonoBehaviour {
 	public void ZOMBIFY ()
 	{
 		graphics.renderer.material.color=GameController.ZombieColor;
+	}
+	
+	bool is_dead=false;
+	
+	public void DIE()
+	{
+		is_dead=true;
+		graphics.animation.Play ("King_death");
 	}
 }

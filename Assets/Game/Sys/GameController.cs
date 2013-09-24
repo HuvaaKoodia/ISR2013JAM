@@ -377,7 +377,12 @@ public class GameController : MonoBehaviour {
 	void MeetEnemyKing(){
 		player.transform.position=EnemyTower.player_pos.transform.position;
 		player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
-		hud_man.King2Talk(hud_man.database.MeetingThePlagueKing);
+		
+		if (player.IsSick()){
+			hud_man.King2Talk(hud_man.database.ZOMBIE_MeetingThePlagueKing);
+		}
+		else
+			hud_man.King2Talk(hud_man.database.MeetingThePlagueKing);
 		player_in_tower=true;
 	}
 	

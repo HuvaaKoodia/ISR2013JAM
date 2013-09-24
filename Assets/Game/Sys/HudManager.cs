@@ -43,6 +43,13 @@ public class HudManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Alpha3)){
 			EndDialogue();
 		}
+		
+		if (Input.GetKeyDown(KeyCode.Alpha4)){
+			king1.DIE();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha5)){
+			king2.DIE();
+		}
 	}
 	
 	public void King1Talk(DialogueData data){
@@ -171,6 +178,7 @@ public class HudManager : MonoBehaviour {
 	
 	void EndDialogue(){
 		ResetKings();
+		ClearAnswers();
 		player_camera.MoveToPlayerPos();
 	}
 	
@@ -198,15 +206,16 @@ public class HudManager : MonoBehaviour {
 		}
 		
 		if (type== "GAMEOVER_PLAGUEKINGDEAD"){
+			king2.DIE();
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("The Plague King Is Defeated!");
 			return true;
 		}
 		
 		if (type== "GAMEOVER_KINGDEAD"){
+			king1.DIE();
 			game_controller.GAMEOVER=true;
 			gameover_hud.GAMEOVER("You dethroned the king!");
-			
 			return true;
 		}
 		
