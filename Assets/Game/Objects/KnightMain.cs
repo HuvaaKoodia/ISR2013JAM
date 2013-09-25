@@ -19,11 +19,15 @@ public class KnightMain : MonoBehaviour {
 		
 	}
 	
+	private void RotateGraphics(int rx,int ry){
+		Base.graphics_offset.transform.rotation=Quaternion.LookRotation(new Vector3(rx,0,ry),Vector3.up);
+	}
+	
 	public bool Move(int rx,int ry){
 		if (!Base.grid.GetPos(Base.x+rx,Base.y+ry)&&legitMovePosition(Base.x+rx,Base.y+ry)){
 			//move
 			Base.Move(rx,ry);
-			Base.graphics.transform.rotation=Quaternion.LookRotation(new Vector3(rx,0,ry),Vector3.up)*Quaternion.AngleAxis(-90,Vector3.up);
+			RotateGraphics(rx,ry);
 			return true;
 		}
 		return false;
@@ -38,7 +42,7 @@ public class KnightMain : MonoBehaviour {
 			unit.Hit(1000,Base);
 			
 			//move
-			Base.graphics.transform.rotation=Quaternion.LookRotation(new Vector3(wx-Base.x,0,wy-Base.y),Vector3.up)*Quaternion.AngleAxis(-90,Vector3.up);
+			RotateGraphics(wx-Base.x,wy-Base.y);
 			Base.MoveTo(wx,wy);
 			return true;
 		}
@@ -63,6 +67,10 @@ public class KnightMain : MonoBehaviour {
 		return Base.State==SoldierState.Sick;;
 	}
 	
+	public void PlayDeathAnim(){
+		Base.graphics.animation.Play("Knight_death");
+	}
+	
 	
 	//DEV:TEMP
 	
@@ -70,7 +78,7 @@ public class KnightMain : MonoBehaviour {
 		if (!Base.grid.GetPos(Base.x+rx,Base.y+ry)){
 			//move
 			Base.Move(rx,ry);
-			Base.graphics.transform.rotation=Quaternion.LookRotation(new Vector3(rx,0,ry),Vector3.up)*Quaternion.AngleAxis(-90,Vector3.up);
+			RotateGraphics(rx,ry);
 			return true;
 		}
 		return false;

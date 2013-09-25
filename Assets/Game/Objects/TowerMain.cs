@@ -45,13 +45,13 @@ public class TowerMain : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 		//temppikoodia
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+		/*if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			OpenGate();
 		}
 
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			CloseGate();	
-		}
+		}*/
 	}
 	
 	public void SetPos(int x,int y,bool face_up){

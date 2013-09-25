@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MAINMENUCONTROLLER : MonoBehaviour {
+public class MainMenuController : MonoBehaviour {
 	
 	public GameObject CreditsPanel;
 	public GameObject HelpPanel;
@@ -17,7 +17,7 @@ public class MAINMENUCONTROLLER : MonoBehaviour {
 	}
 	
 	void PlayPressed(){
-		Application.LoadLevel("SkeneIlkka");
+		Application.LoadLevel("GameScene");
 	}
 	
 	void CreditsPressed(){

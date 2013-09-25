@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	public CameraMain player_camera;
 	
 	public HudManager hud_man;
+	public BackToMenuMain back_to_menu;
 	
 	public KnightMain player;
 	List<SoldierMain> units,player_units,enemy_units;
@@ -30,6 +31,9 @@ public class GameController : MonoBehaviour {
 			}
 		}
 	}
+	
+	int ally_max;
+	int enemy_max;
 	
 	// Use this for initialization
 	void Start (){
@@ -59,7 +63,10 @@ public class GameController : MonoBehaviour {
 		player_camera.Target=player.transform;
 		player_camera.Offset=Vector3.up;
 		
-		for (int i=0;i<200;i++){
+		ally_max=Random.Range(100,200);
+		enemy_max=Random.Range(100,200);
+		
+		for (int i=0;i<ally_max;i++){
 			
 			int x,y;
 			do{
@@ -84,7 +91,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		//enemy units
-		for (int i=0;i<150;i++){
+		for (int i=0;i<enemy_max;i++){
 			int x,y;
 			do{
 				x=Random.Range(0,grid.GridWidth);
@@ -152,11 +159,9 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update (){
+
 		
-		if (Input.GetKeyDown(KeyCode.Escape)){
-			Application.LoadLevel("SkeneMainMenu");
-		}
-		
+		//game start timer
 		if (all_is_locked){
 			t.Update();
 			
@@ -175,8 +180,14 @@ public class GameController : MonoBehaviour {
 		}
 		
 		if (hud_man.DIALOGUE_ON||all_is_locked) return;
+				
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			back_to_menu.ToggleMenu();
+		}
 		
-		if (Input.GetKey(KeyCode.Space)){
+		if (back_to_menu.IsOn()) return;
+		
+		if (Input.GetButton("Wait")){
 			PlayerActionDone();
 		}
 		
@@ -222,7 +233,7 @@ public class GameController : MonoBehaviour {
 
 		//mouse input
 		
-		if (Input.GetMouseButtonDown(0)){
+		if (Input.GetButtonDown("Interact & Move")){
 			
 			if (!turn_on&&player!=null){
 				TowerMain torni;
@@ -252,7 +263,7 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		
-		if (Input.GetMouseButtonDown(1)){
+		if (Input.GetButtonDown("Attack")){
 			
 			if (!turn_on&&player!=null){
 				TowerMain torni;
@@ -287,12 +298,15 @@ public class GameController : MonoBehaviour {
 						var s=units[i];
 		
 						if (s.DEAD){
-							if (s==player)
-								player=null;
+							if (s==player.Base){
+								
+							}
+							else{
+								s.DIE();
+							}
 							units.Remove(s);
 							player_units.Remove(s);
 							enemy_units.Remove(s);
-							s.DIE();
 							i--;
 							
 						}
@@ -315,23 +329,21 @@ public class GameController : MonoBehaviour {
 					units_moving=false;
 					turn_on=false;
 					
-					
 					if (player.Base.DEAD){
 						
 						GAMEOVER=true;
+						player.PlayDeathAnim();
 						hud_man.gameover_hud.GAMEOVER("You are dead!");
 					}
 				}
 			}
 		}
 		
-		
-		
 		//GAME script
 		if (!turn_on){
 			if ( camp_state==0){
 				//start dialogue
-				if (enemy_units.Count<=100){
+				if (enemy_units.Count<=enemy_max*0.5f){
 					
 					EnemiesFlee();
 					camp_state++;
@@ -339,7 +351,7 @@ public class GameController : MonoBehaviour {
 			}
 			if ( camp_state==1){
 				//start dialogue
-				if (enemy_units.Count<=50){
+				if (enemy_units.Count<=enemy_max*0.25f){
 					
 					EnemiesPlague();
 					camp_state++;
@@ -349,17 +361,16 @@ public class GameController : MonoBehaviour {
 		
 		//goto tower
 		if (!player.Base.MOVING&&!player_in_tower){
-				
-				if (playerInGateAlly()){
-					//go to king
-					MeetKing();
-				}
-				
-				if (playerInGateEnemy()){
-					//go to enemy king
-					MeetEnemyKing();
-				}
+			if (playerInGateAlly()){
+				//go to king
+				MeetKing();
 			}
+			
+			if (playerInGateEnemy()){
+				//go to enemy king
+				MeetEnemyKing();
+			}
+		}
 	}
 	
 	void MeetKing(){

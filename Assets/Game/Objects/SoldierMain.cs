@@ -38,9 +38,13 @@ public class SoldierMain : MonoBehaviour {
 			if (hp<=0){
 				hp=0;
 				DEAD=true;	
-				Destroy(graphics);
+				
 			}
 		}
+	}
+	
+	public void DestroyGraphics(){
+		Destroy(graphics);
 	}
 	
 	public void Flee(){

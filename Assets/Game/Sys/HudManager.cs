@@ -31,25 +31,46 @@ public class HudManager : MonoBehaviour {
 	
 		//temp
 		
-		if (Input.GetKeyDown(KeyCode.Alpha1)){
+		if (Input.GetKeyDown(KeyCode.F1)){
 			King1Talk(database.ZOMBIE_MeetingTheReverendKing);
 		}
 		
-		if (Input.GetKeyDown(KeyCode.Alpha2)){
+		if (Input.GetKeyDown(KeyCode.F2)){
 			King2Talk(database.ZOMBIE_MeetingThePlagueKing);
 			//King2Talk(database.AtTheGateOfReverendKing);
 		}
 		
-		if (Input.GetKeyDown(KeyCode.Alpha3)){
+		if (Input.GetKeyDown(KeyCode.F3)){
 			EndDialogue();
 		}
 		
-		if (Input.GetKeyDown(KeyCode.Alpha4)){
+		if (Input.GetKeyDown(KeyCode.F4)){
 			king1.DIE();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha5)){
+		if (Input.GetKeyDown(KeyCode.F5)){
 			king2.DIE();
 		}
+		
+		if (DIALOGUE_ON){
+			if (Input.GetKeyDown(KeyCode.Alpha1)){
+				if (answer_buttons.Count>0){
+					AnswerButtonPressed(answer_buttons[0]);
+				}
+			}
+			
+			if (Input.GetKeyDown(KeyCode.Alpha2)){
+				if (answer_buttons.Count>1){
+					AnswerButtonPressed(answer_buttons[1]);
+				}
+			}
+			
+			if (Input.GetKeyDown(KeyCode.Alpha3)){
+				if (answer_buttons.Count>2){
+					AnswerButtonPressed(answer_buttons[2]);
+				}
+			}
+		}
+		
 	}
 	
 	public void King1Talk(DialogueData data){

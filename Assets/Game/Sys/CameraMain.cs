@@ -75,7 +75,7 @@ public class CameraMain : MonoBehaviour {
 		}
 		
 		if (!LOCK_INPUT){
-		 	if (Input.GetMouseButton(2)){
+		 	if (Input.GetButton("Rotate Camera")){
 				Rotate();
 			}
 					
