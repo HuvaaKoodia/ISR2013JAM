@@ -8,7 +8,7 @@ public class KnightMain : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Base.SetMovemenType(MovementType.Relative);
-		Base.hp=500;
+		Base.HP=500;
 		Base.attack_power=25;
 		
 		Base.move_animation="Knight_move";

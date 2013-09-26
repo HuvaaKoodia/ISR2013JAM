@@ -33,8 +33,6 @@ public class CameraMain : MonoBehaviour {
 			return;
 		}
 		
-					
-		
 		if (moving_to_obj){
 			
 			bool moving_done=false,rotation_done=false;
@@ -43,9 +41,7 @@ public class CameraMain : MonoBehaviour {
 					in_orbit=true;
 					moving_to_cam_object=false;
 				}
-				if (moving_to_player){
-					moving_to_player=false;
-				}
+				
 				moving_done=true;
 			}
 			//move
@@ -129,7 +125,7 @@ public class CameraMain : MonoBehaviour {
 		setDistance(distance+distance*multiplier);
 	}
 	
-	bool moving_to_obj=false,moving_to_cam_object=false,moving_to_player=false;
+	bool moving_to_obj=false,moving_to_cam_object=false;
 	Vector3 cam_obj_pos;
 	float cam_obj_dis,cam_obj_odis,cam_obj_rot_diff;
 	Vector3 cam_obj_direction;
@@ -137,9 +133,26 @@ public class CameraMain : MonoBehaviour {
 	
 	float cam_obj_move_speed,cam_obj_min_speed=1;
 	
+	public void MoveToCameraPos(Vector3 pos,Quaternion rot){
+		in_orbit=false;
+		moving_to_obj=true;
+		moving_to_cam_object=true;
+		
+		cam_obj_pos=pos;
+		
+		cam_obj_direction=cam_obj_pos-transform.position;
+		cam_obj_dis=cam_obj_odis=cam_obj_direction.magnitude;
+		cam_obj_direction.Normalize();
+		
+		cam_obj_move_speed=cam_obj_odis+cam_obj_min_speed;
+		
+		cam_obj_rot_diff=2;//Vector3.Angle(transform.rotation.eulerAngles,cam_obj.transform.rotation.eulerAngles);
+		
+		rotation_target=rot;
+	}
+	
 	public void MoveToCameraPos(GameObject pos){
 		in_orbit=false;
-		moving_to_player=false;
 		moving_to_obj=true;
 		moving_to_cam_object=true;
 		
@@ -161,7 +174,6 @@ public class CameraMain : MonoBehaviour {
 		moving_to_cam_object=false;
 		
 		moving_to_obj=true;
-		moving_to_player=true;
 		cam_obj_pos=player_pos;
 		
 		cam_obj_direction=cam_obj_pos-transform.position;

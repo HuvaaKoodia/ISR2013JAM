@@ -37,8 +37,7 @@ public class SoldierMain : MonoBehaviour {
 			hp=value;
 			if (hp<=0){
 				hp=0;
-				DEAD=true;	
-				
+				DEAD=true;
 			}
 		}
 	}

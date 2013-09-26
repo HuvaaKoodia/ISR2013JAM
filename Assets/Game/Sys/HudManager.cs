@@ -37,7 +37,6 @@ public class HudManager : MonoBehaviour {
 		
 		if (Input.GetKeyDown(KeyCode.F2)){
 			King2Talk(database.ZOMBIE_MeetingThePlagueKing);
-			//King2Talk(database.AtTheGateOfReverendKing);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.F3)){
@@ -73,16 +72,28 @@ public class HudManager : MonoBehaviour {
 		
 	}
 	
-	public void King1Talk(DialogueData data){
-		ResetKings();
+	public void SoldierTalk(SoldierMain soldier,DialogueData data){
 		DIALOGUE_ON=true;
+		
 		speech_bubble_anchor.side=UIAnchor.Side.TopRight;
-			
 		speech_bubble.setPosition(king1_speech_pos);
 		speech_bubble.appear();
 		
-		//speech_bubble.setText(data.Text);
-		//setAnswers(data);
+		ChangeDialogue(data);
+		
+		king1.StartTalking();
+		
+		var pos=soldier.transform.position+new Vector3(2,2.5f);
+		player_camera.MoveToCameraPos(pos,Quaternion.LookRotation(soldier.transform.position-pos,Vector3.up));
+	}
+	
+	public void King1Talk(DialogueData data){
+		ResetKings();
+		DIALOGUE_ON=true;
+		
+		speech_bubble_anchor.side=UIAnchor.Side.TopRight;
+		speech_bubble.setPosition(king1_speech_pos);
+		speech_bubble.appear();
 		
 		ChangeDialogue(data);
 		
@@ -94,13 +105,12 @@ public class HudManager : MonoBehaviour {
 	public void King2Talk(DialogueData data){
 		ResetKings();
 		DIALOGUE_ON=true;
+		
 		speech_bubble_anchor.side=UIAnchor.Side.TopLeft;
-			
 		speech_bubble.setPosition(king2_speech_pos);
 		speech_bubble.appear();
 		
-		speech_bubble.setText(data.Text);
-		setAnswers(data);
+		ChangeDialogue(data);
 	
 		king2.StartTalking();
 		
@@ -108,6 +118,15 @@ public class HudManager : MonoBehaviour {
 	}
 	
 	void ChangeDialogue(DialogueData data){
+		if (data.Type=="RANDOM"){
+			if (!data.hasAnswers()){
+				Debug.LogError("No anwers in "+data.Text+". type: RANDOM.");
+				return;
+			}
+			data=data.answers[Random.Range(0,data.answers.Count)];
+		}
+		
+		
 		speech_bubble.setText(data.Text);
 		
 		if (data.hasAnswers()){

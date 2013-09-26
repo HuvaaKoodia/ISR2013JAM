@@ -15,6 +15,9 @@ public class DialogueDatabase : MonoBehaviour {
 		ZOMBIE_MeetingTheReverendKing,
 		SlayingThePlagueKing,
 		SlayingTheReverendKing,
+		SoldierAllyRandomStart,
+		SoldierAllyRandom1,
+		SoldierAllyRandom2,
 		
 		EndDialogueData,
 		EndDialogueEndConversation,
@@ -28,8 +31,6 @@ public class DialogueDatabase : MonoBehaviour {
 
 		//end messages
 		
-		
-		
 		EndDialogueEndConversation=new DialogueData("<End conversation>","ENDL");
 		EndDialogueNoComment=new DialogueData("<No comment>","ENDL");
 		EndDialogueAwkwardSilence=new DialogueData("<AwkwardSilence>","ENDL");
@@ -41,7 +42,6 @@ public class DialogueDatabase : MonoBehaviour {
 		//start dialogue 1
 		TheBattleBegins=new DialogueData("The time has come!\n\nSlay the vile Plague King and his army.\nThis is thy destiny!");
 		
-
 		ans1=new DialogueData("I will bring you the top most part of this false King.");
 		/*
 		ans2=new DialogueData("Checkers will be pointy with the Chips of the Plague Pawns.");
@@ -354,10 +354,23 @@ public class DialogueDatabase : MonoBehaviour {
 		
 		ans1=new DialogueData("Yummy...","GAMEOVER_ZOMBIEPLAGUEKING");
 		ka1.AddAnswer(ans1);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+		
+		//soldier random
+		SoldierAllyRandom1=new DialogueData("Must continue fighting!");
+		
+		ans1=new DialogueData("Carry on.","ENDL");
+		ans2=new DialogueData("You do that.","ENDL");
+		
+		SoldierAllyRandom1.AddAnswer(ans1);
+		SoldierAllyRandom1.AddAnswer(ans2);
+		
+		SoldierAllyRandom2=new DialogueData("EXTERMINATE!");
+		
+		
+		
+		SoldierAllyRandomStart=new DialogueData("","RANDOM");
+		
+		SoldierAllyRandomStart.AddAnswer(SoldierAllyRandom1);
+		SoldierAllyRandomStart.AddAnswer(SoldierAllyRandom2);
 	}
 }

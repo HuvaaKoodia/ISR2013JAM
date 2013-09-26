@@ -149,6 +149,19 @@ public class GameController : MonoBehaviour {
 		tower=null;
 		return false;
 	}
+	
+	private bool GetMouseSoldier(out SoldierMain soldier){
+		var ray=Camera.main.ScreenPointToRay(Input.mousePosition);
+		int mask=1<<LayerMask.NameToLayer("Soldier");
+		RaycastHit info;
+		if (Physics.Raycast(ray,out info,500,mask)){
+			soldier=info.collider.gameObject.GetComponent<SoldierMain>();
+			return true;
+		}
+		soldier=null;
+		return false;
+	}
+	
 	bool player_moving=false,units_moving=false;
 	
 	void PlayerActionDone(){
@@ -237,8 +250,21 @@ public class GameController : MonoBehaviour {
 			
 			if (!turn_on&&player!=null){
 				TowerMain torni;
+				SoldierMain soldier;
 				Vector2 tile_pos;
+				bool moving=true; 
 				
+				if (GetMouseSoldier(out soldier)){
+					if (player.Base!=soldier){
+						if (player.legitMovePosition(soldier.x,soldier.y)){
+							if (soldier.State==SoldierState.Ally){
+								hud_man.SoldierTalk(soldier,hud_man.database.SoldierAllyRandomStart);
+								
+							}
+							moving=false;
+						}
+					}
+				}
 				if (GetMouseTower(out torni)){
 					if (!torni.DEAD&&player.legitMovePosition(torni.gate_x,torni.gate_y)){
 						if (torni.IsAlly()){
@@ -247,10 +273,11 @@ public class GameController : MonoBehaviour {
 						else{
 							TalkToEnemyKing();
 						}
+						moving=false;
 					}
 				}
 				
-				if (GetMouseTilePos(out tile_pos)){
+				if (moving&&GetMouseTilePos(out tile_pos)){
 					if (player.MoveTo((int)tile_pos.x,(int)tile_pos.y)){
 						
 						if (!playerInGateEnemy()&&!playerInGateEnemy()){
