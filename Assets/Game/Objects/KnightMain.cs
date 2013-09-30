@@ -8,7 +8,7 @@ public class KnightMain : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Base.SetMovemenType(MovementType.Relative);
-		Base.HP=500;
+		Base.HPMAX=500;
 		Base.attack_power=25;
 		
 		Base.move_animation="Knight_move";
@@ -59,7 +59,7 @@ public class KnightMain : MonoBehaviour {
 	public bool legitMovePosition(int wx,int wy){
 		float dis= Vector2.Distance(new Vector2(Base.x,Base.y),new Vector2(wx,wy));
 		dis=Mathf.Floor(dis);
-		Debug.Log(dis);
+		//Debug.Log(dis);
 		return dis<=2;
 	}
 	

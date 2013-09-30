@@ -6,6 +6,8 @@ using System.Linq;
 public enum SoldierState{Ally,Enemy,Sick}
 public enum MovementType{Linear,Relative}
 
+public delegate void HPchangedEvent(int hp_change);
+
 public class SoldierMain : MonoBehaviour {
 	
 	public ChessboardGrid grid;
@@ -25,20 +27,31 @@ public class SoldierMain : MonoBehaviour {
 	
 	public int attack_power=10;
 	
-	public 
-	
-	int hp;
+	public HPchangedEvent HPchanged;
+	int hp,hp_max;
 	public int HP{
-		
 		get{
 			return hp;
 		}
 		set{
+			int change=value-hp;
 			hp=value;
 			if (hp<=0){
 				hp=0;
 				DEAD=true;
 			}
+			if (HPchanged!=null)
+				HPchanged(change);
+		}
+	}
+	
+	public int HPMAX{
+		get{
+			return hp_max;
+		}
+		set{
+			hp_max=value;
+			hp=value;
 		}
 	}
 	
@@ -53,8 +66,10 @@ public class SoldierMain : MonoBehaviour {
 	
 	//Use this for initialization
 	void Start () {
-		hp=100;
+		HPMAX=100;
 		Fleeing=false;
+		
+	graphics_start_scale_y=graphics_offset.transform.localScale.y;
 	}
 	
 	public bool updated_already_this_turn=false;
@@ -381,5 +396,11 @@ public class SoldierMain : MonoBehaviour {
 	
 	public void SetMovemenType(MovementType type){
 		movement_type=type;
+	}
+	
+	float graphics_start_scale_y;
+	public void SquishGraphics (float dif)
+	{
+		graphics_offset.transform.localScale=new Vector3(graphics.transform.localScale.x,dif/graphics_start_scale_y,graphics.transform.localScale.z);
 	}
 }

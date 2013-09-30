@@ -284,13 +284,13 @@ public class HudManager : MonoBehaviour {
 		//neutral events
 		if (type=="LEAVE_PLAYERTOWER"){
 			
-			game_controller.GOTO_PLAYERTOVER_BASE();
+			game_controller.GOTO_PLAYERTOWER_BASE();
 			EndDialogue();
 			return true;
 		}
 		if (type=="LEAVE_ENEMYTOWER"){
 			
-			game_controller.GOTO_ENEMYTOVER_BASE();
+			game_controller.GOTO_ENEMYTOWER_BASE();
 			EndDialogue();
 			return true;
 		}
