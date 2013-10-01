@@ -1,0 +1,11 @@
+<Root>
+  <Data>
+    <Name>DialogueName</Name>
+    <Text>DialogueText</Text>
+    <Type>DialogueType</Type>
+    <Links>
+      <Link random="80">DialogueName2</Link>
+      <Link>DialogueName3</Link>
+    </Links>
+  </Data>
+</Root>

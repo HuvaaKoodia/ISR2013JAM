@@ -280,7 +280,7 @@ public class SoldierMain : MonoBehaviour {
 			}
 		}
 		
-		StartBlinking();
+		StartBlinking(Color.red);
 	}
 	
 	float move_tx,move_ty,move_length;
@@ -350,17 +350,17 @@ public class SoldierMain : MonoBehaviour {
 		_color=color;
 	}
 	
-	void StartBlinking(){
+	public void StartBlinking(Color color){
 		StopCoroutine("Blink");
 		graphics.renderer.material.color=_color;
-		StartCoroutine("Blink");
+		StartCoroutine("Blink",color);
 	}
 	
-	IEnumerator Blink(){
+	IEnumerator Blink(Color color){
 		for (int i=0;i<4;i++){
 			Color c=_color;
 			if (graphics.renderer.material.color==_color)
-				c=new Color(1f,0,0);
+				c=color;
 			
 			graphics.renderer.material.color=c;
 			

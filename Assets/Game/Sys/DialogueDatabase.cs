@@ -1,7 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class DialogueDatabase : MonoBehaviour {
+	
+	public Dictionary<string,DialogueData> DialogueDatas{get;private set;}
+	
+	public void InitDialogueDataBase(){
+		DialogueDatas=new Dictionary<string, DialogueData>();
+	}
+	/// <summary>
+	/// Call after all dialogue XML files have been read.
+	/// </summary>
+	public void ParseDialogueDataBase(){
+		foreach (var dd in DialogueDatas){
+			if (dd.Value.hasAnswers()){
+				foreach (var l in dd.Value.Answers){
+					if(l.Data==null){
+						l.Data=GetDialogueData(l.Link);
+					}
+				}	
+			}
+		}	
+	}
+	
+	public void AddDialogueData(string name,DialogueData data){
+		if (!DialogueDatas.ContainsKey(name))
+			DialogueDatas.Add(name,data);
+		else{
+			Debug.LogError("DialogueData called "+name+" already exists!");
+		}
+	}
+
+	public DialogueData GetDialogueData(string name)
+	{
+		if (DialogueDatas.ContainsKey(name))
+			return DialogueDatas[name];
+		Debug.LogError("DialogueData called "+name+" doesn't exist!");
+		return null;
+	}
 	
 	public DialogueData 
 		TheBattleBegins,
@@ -18,6 +56,8 @@ public class DialogueDatabase : MonoBehaviour {
 		SoldierAllyRandomStart,
 		SoldierAllyRandom1,
 		SoldierAllyRandom2,
+		SoldierAllyRandomStartZombie,
+		SoldierAllyRandom1Zombie,
 		
 		EndDialogueData,
 		EndDialogueEndConversation,
@@ -25,8 +65,7 @@ public class DialogueDatabase : MonoBehaviour {
 		EndDialogueAwkwardSilence;
 	
 	// Use this for initialization
-	void Start () {
-		
+	void Start (){		
 		DialogueData ans1,ans2,ans3,ka1,ka2,ka3;
 
 		//end messages
@@ -366,11 +405,22 @@ public class DialogueDatabase : MonoBehaviour {
 		
 		SoldierAllyRandom2=new DialogueData("EXTERMINATE!");
 		
-		
-		
 		SoldierAllyRandomStart=new DialogueData("","RANDOM");
 		
-		SoldierAllyRandomStart.AddAnswer(SoldierAllyRandom1);
+		SoldierAllyRandomStart.AddAnswer(SoldierAllyRandom1,80);
 		SoldierAllyRandomStart.AddAnswer(SoldierAllyRandom2);
+		
+		//soldier random zombie
+		SoldierAllyRandom1Zombie=new DialogueData("You shall not pass!");
+		
+		ans1=new DialogueData("Urgh...","ENDL");
+		ans2=new DialogueData("Brains...","ENDL");
+		
+		SoldierAllyRandom1Zombie.AddAnswer(ans1,50);
+		SoldierAllyRandom1Zombie.AddAnswer(ans2);
+
+		SoldierAllyRandomStartZombie=new DialogueData("","RANDOM");
+		
+		SoldierAllyRandomStartZombie.AddAnswer(SoldierAllyRandom1Zombie);
 	}
 }

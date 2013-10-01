@@ -123,7 +123,8 @@ public class HudManager : MonoBehaviour {
 				Debug.LogError("No anwers in "+data.Text+". type: RANDOM.");
 				return;
 			}
-			data=data.answers[Random.Range(0,data.answers.Count)];
+			//data=data.answers[Random.Range(0,data.answers.Count)];
+			data=data.GetRandom();
 		}
 		
 		
@@ -164,7 +165,7 @@ public class HudManager : MonoBehaviour {
 		
 		if (data.hasAnswers()){
 			int y_off=0;
-			foreach (var d in data.answers){
+			foreach (var d in data.Answers){
 				
 				var go=Instantiate(answer_button_prefab,Vector3.zero,Quaternion.identity) as GameObject;
 				var ab=go.GetComponent<AnswerButtonMain>();
@@ -172,7 +173,7 @@ public class HudManager : MonoBehaviour {
 				go.transform.parent=speech_bubble_answer_buttons_parent.transform;
 				go.transform.localPosition=speech_bubble.transform.localPosition+answer_text_offset+Vector3.down*y_off;
 				
-				ab.SetData(d);
+				ab.SetData(d.Data);
 				ab.Base.appear();
 				ab.bps.controller=gameObject;
 				
@@ -202,7 +203,7 @@ public class HudManager : MonoBehaviour {
 			return;
 		}
 		
-		var a=ans.Data.answers[0];
+		var a=ans.Data.Answers[0].Data;
 		ChangeDialogue(a);
 		
 		/*if(a!=null){//DEV.random data if many?

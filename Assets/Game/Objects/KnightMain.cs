@@ -12,12 +12,27 @@ public class KnightMain : MonoBehaviour {
 		Base.attack_power=25;
 		
 		Base.move_animation="Knight_move";
+		
+		is_sick_tick=is_sick_tick_max;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+	
+	public void TurnEndUpdate(){
+		if (IsSick()){
+			is_sick_tick--;
+			if(is_sick_tick<=0){
+				Base.HP-=sickness_hp_dec;
+				Base.StartBlinking(Color.green);
+				is_sick_tick=is_sick_tick_max;
+			}
+		}
+	}
+	
+	int sickness_hp_dec=5,is_sick_tick=0,is_sick_tick_max=2;
 	
 	private void RotateGraphics(int rx,int ry){
 		Base.graphics_offset.transform.rotation=Quaternion.LookRotation(new Vector3(rx,0,ry),Vector3.up);

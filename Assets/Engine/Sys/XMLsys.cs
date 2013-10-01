@@ -8,6 +8,8 @@ using System.Linq;
 
 public class XMLsys : MonoBehaviour {
 	
+	public DialogueDatabase dialoguedatabase;
+	
 	
 	//engine logic
 	void Awake () {
@@ -19,17 +21,83 @@ public class XMLsys : MonoBehaviour {
 	}
 	
 	//game logic
-	void readXML(){
+	public void readXML(){
 		
+		dialoguedatabase.InitDialogueDataBase();
 		
+		var path="Data/Dialogues";
 		
+		var files=Directory.GetFiles(path);
+		foreach (var file in files){
+			if(file.EndsWith("Example.xml")) continue;
+			
+			var Xdoc=new XmlDocument();
+			Xdoc.Load(file);
+			
+			var dialogues=Xdoc.GetElementsByTagName("Data");
+			
+			foreach (XmlNode d in dialogues){
+				try{
+					var name=d["Name"].InnerText;
+					var text=d["Text"].InnerText;
+					var type="";
+					if (d["Type"]!=null)
+						type=d["Type"].InnerText;
+					
+					var data=new DialogueData(name);
+					data.Text=text;
+					data.Type=type;
+					
+					//reading links
+					var link=d["Links"];
+					if (link!=null){
+						var links=Xdoc.GetElementsByTagName("Link");
+						foreach (XmlNode l in links){
+							int chance=0;
+							if(l.Attributes["random"]!=null){
+								chance=int.Parse(l.Attributes["random"].Value);
+							}
+							data.AddLink(new DialogueLink(l.InnerText,chance));
+						}
+					}
+				
+					dialoguedatabase.AddDialogueData(name,data);
+				}
+				catch(Exception e){
+					Debug.LogError("Dialogue data is faulty!");
+					break;	
+				}
+			}
+		}
+		
+		dialoguedatabase.ParseDialogueDataBase();
 	}
 	
-	void writeXML(){
+	public void writeXML(){
+		var path="Data/Dialogues";
+		checkFolder(path);
 		
+		var file="/Example.xml";
+		if (checkFile(path+file)) return;
 		
+		XmlDocument Xdoc=new XmlDocument();
+		
+		var root=Xdoc.CreateElement("Root");
+		Xdoc.AppendChild(root);
+		
+		var data=addElement(root,"Data");
+		
+		addElement(data,"Name","DialogueName");
+		addElement(data,"Text","DialogueText");
+		addElement(data,"Type","DialogueType");
+		
+		var links=addElement(data,"Links");
+		var link=addElement(links,"Link","DialogueName2");
+		addAttribute(link,"random","80");
+		addElement(links,"Link","DialogueName3");
+
+		Xdoc.Save(path+file);
 	}
-	
 	
 	//subs
 	string getStr(XmlElement element,string name){
@@ -47,19 +115,45 @@ public class XMLsys : MonoBehaviour {
 		return float.Parse(element[name].InnerText);
 	}
 	
-	void addElement(XmlElement element,string name,string val){
+		
+	//adding elements
+	XmlElement addElement(XmlElement element,string name){
+		var node=element.OwnerDocument.CreateElement(name);
+		element.AppendChild(node);
+		return node;
+	}
+	
+	XmlElement addElement(XmlElement element,string name,string val){
 		var node=element.OwnerDocument.CreateElement(name);
 		node.InnerText=val;
 		element.AppendChild(node);
+		return node;
 	}
 	
-	void addElement(XmlElement element,string name,int val){
-		addElement(element,name,val.ToString());
+	XmlElement addElement(XmlElement element,string name,int val){
+		return addElement(element,name,val.ToString());
 	}
 	
-	void addElement(XmlElement element,string name,float val){
-		addElement(element,name,val.ToString());
+	XmlElement addElement(XmlElement element,string name,float val){
+		return addElement(element,name,val.ToString());
 	}
+	//adding attributes
+		
+	XmlAttribute addAttribute(XmlElement element,string name,string val){
+		var att=element.OwnerDocument.CreateAttribute(name);
+		att.Value=val;
+		element.Attributes.Append(att);
+		return att;
+	}
+
+	XmlAttribute addAttribute(XmlElement element,string name,int val){
+		return addAttribute(element,name,val.ToString());
+	}
+	
+	XmlAttribute addAttribute(XmlElement element,string name,float val){
+		return addAttribute(element,name,val.ToString());
+	}
+	
 		
 	void readAuto(XmlElement element,object obj){
 		foreach (var f in obj.GetType().GetFields()){
@@ -115,5 +209,9 @@ public class XMLsys : MonoBehaviour {
 		if (!Directory.Exists(path)){
 			Directory.CreateDirectory(path);
 		}
+	}
+	
+	bool checkFile(string path){
+		return File.Exists(path);
 	}
 }

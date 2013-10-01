@@ -176,13 +176,12 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 
-		
 		//game start timer
 		if (all_is_locked){
 			t.Update();
 			
 			if (t.OVER){
-				hud_man.King1Talk(hud_man.database.TheBattleBegins);
+				hud_man.King1Talk(hud_man.database.GetDialogueData("TheBattleBegins"));
 				all_is_locked=false;
 			}
 		}
@@ -261,7 +260,12 @@ public class GameController : MonoBehaviour {
 					if (Player.Base!=soldier){
 						if (Player.legitMovePosition(soldier.x,soldier.y)){
 							if (soldier.State==SoldierState.Ally){
-								hud_man.SoldierTalk(soldier,hud_man.database.SoldierAllyRandomStart);
+								if (Player.IsSick()){
+									hud_man.SoldierTalk(soldier,hud_man.database.SoldierAllyRandomStartZombie);
+								}
+								else{
+									hud_man.SoldierTalk(soldier,hud_man.database.SoldierAllyRandomStart);
+								}
 								
 							}
 							moving=false;
@@ -356,14 +360,26 @@ public class GameController : MonoBehaviour {
 					}
 				}
 				if (all_good){
+					//turn over
 					units_moving=false;
 					turn_on=false;
 					
 					if (Player.Base.DEAD){
-						
 						GAMEOVER=true;
 						Player.PlayDeathAnim();
 						hud_man.gameover_hud.GAMEOVER("You are dead!");
+					}
+					else{
+						Player.TurnEndUpdate();
+						//goto towers
+						if (!Player.Base.MOVING&&!Player_in_tower){
+							if (PlayerInGateAlly()){
+								MeetKing();
+							}
+							if (PlayerInGateEnemy()){
+								MeetEnemyKing();
+							}
+						}
 					}
 				}
 			}
@@ -372,7 +388,7 @@ public class GameController : MonoBehaviour {
 		//GAME script
 		if (!turn_on){
 			if ( camp_state==0){
-				//start dialogue
+				//flee!
 				if (enemy_units.Count<=enemy_max*0.5f){
 					
 					EnemiesFlee();
@@ -380,7 +396,7 @@ public class GameController : MonoBehaviour {
 				}
 			}
 			if ( camp_state==1){
-				//start dialogue
+				//plague!
 				if (enemy_units.Count<=enemy_max*0.25f){
 					
 					EnemiesPlague();
@@ -388,19 +404,7 @@ public class GameController : MonoBehaviour {
 				}
 			}
 		}
-		
-		//goto tower
-		if (!Player.Base.MOVING&&!Player_in_tower){
-			if (PlayerInGateAlly()){
-				//go to king
-				MeetKing();
-			}
-			
-			if (PlayerInGateEnemy()){
-				//go to enemy king
-				MeetEnemyKing();
-			}
-		}
+
 	}
 	
 	void MeetKing(){
