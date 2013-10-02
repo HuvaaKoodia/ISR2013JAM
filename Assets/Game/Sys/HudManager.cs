@@ -173,7 +173,12 @@ public class HudManager : MonoBehaviour {
 				go.transform.parent=speech_bubble_answer_buttons_parent.transform;
 				go.transform.localPosition=speech_bubble.transform.localPosition+answer_text_offset+Vector3.down*y_off;
 				
-				ab.SetData(d.Data);
+				if (d.Data.Type=="RANDOM"){
+					ab.SetData(d.Data.GetRandom());
+				}
+				else{
+					ab.SetData(d.Data);
+				}
 				ab.Base.appear();
 				ab.bps.controller=gameObject;
 				
