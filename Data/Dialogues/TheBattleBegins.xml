@@ -3,16 +3,44 @@
     <Name>TheBattleBegins</Name>
     <Text>The time has come!\n\nSlay the vile Plague King and his army.\nThis is thy destiny!</Text>
     <Links>
-      <Link>TheBattleBegins_ans1</Link>
+      <Link>TheBattleBegins_p_r1</Link>
       <Link>TheBattleBegins_ans2</Link>
 	  <Link>TheBattleBegins_ans3</Link>
     </Links>
   </Data>
   
+  <!-- Player random messages -->
+  
+  <Data>
+    <Name>TheBattleBegins_p_r1</Name>
+    <Type>RANDOM</Type>
+    <Links>
+      <Link>TheBattleBegins_ans1a</Link>
+	  <Link>TheBattleBegins_ans1b</Link>
+	  <Link>TheBattleBegins_ans1c</Link>
+    </Links>
+  </Data>
+  
   <!-- Player messages -->
   <Data>
-    <Name>TheBattleBegins_ans1</Name>
+    <Name>TheBattleBegins_ans1a</Name>
     <Text>I will bring you the top most part of this false King.</Text>
+    <Links>
+      <Link>TheBattleBegins_k_end1</Link>
+    </Links>
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans1b</Name>
+    <Text>Checkers will be pointy with the Chips of the Plague Pawns.</Text>
+    <Links>
+      <Link>TheBattleBegins_k_end1</Link>
+    </Links>
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans1c</Name>
+    <Text>We shall force the Plague King to surrender.</Text>
     <Links>
       <Link>TheBattleBegins_k_end1</Link>
     </Links>
@@ -96,9 +124,7 @@
   <Data>
     <Name>TheBattleBegins_p_end1</Name>
     <Text>Nothing...</Text>
-    <Links>
-      <Link>TheBattleBegins_ka1</Link>
-    </Links>
+	<Type>ENDL</Type>
   </Data>
   
   <Data>

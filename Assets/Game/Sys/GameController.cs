@@ -322,6 +322,17 @@ public class GameController : MonoBehaviour {
 				if (!Player.Base.MOVING){
 					Player_moving=false;
 					
+							
+					//goto towers
+					if (!Player_in_tower){
+						if (PlayerInGateAlly()){
+							MeetKing();
+						}
+						if (PlayerInGateEnemy()){
+							MeetEnemyKing();
+						}
+					}
+					
 					//update units
 					for (int i=0;i<units.Count;i++){
 						var s=units[i];
@@ -371,15 +382,6 @@ public class GameController : MonoBehaviour {
 					}
 					else{
 						Player.TurnEndUpdate();
-						//goto towers
-						if (!Player.Base.MOVING&&!Player_in_tower){
-							if (PlayerInGateAlly()){
-								MeetKing();
-							}
-							if (PlayerInGateEnemy()){
-								MeetEnemyKing();
-							}
-						}
 					}
 				}
 			}
@@ -404,7 +406,6 @@ public class GameController : MonoBehaviour {
 				}
 			}
 		}
-
 	}
 	
 	void MeetKing(){

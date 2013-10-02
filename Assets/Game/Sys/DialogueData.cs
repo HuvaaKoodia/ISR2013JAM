@@ -43,20 +43,27 @@ public class DialogueData{
 	public DialogueData GetRandom()
 	{
 		List<DialogueLink> links=new List<DialogueLink>();
+		bool even_random=true;
 		foreach(var l in Answers){
 			links.Add(l);
-		}
-
-		links.OrderByDescending(l=>l.RandomChance);
-		
-		foreach(var l in links){
-			if (Subs.RandomPercent()<l.RandomChance){
-				return l.Data;
+			if(l.RandomChance!=0){
+				even_random=false;
 			}
 		}
-		return links.Last().Data;
+		if (even_random){
+			return links[Random.Range(0,links.Count)].Data;
+		}
+		else{
+			links.OrderByDescending(l=>l.RandomChance);
+			
+			foreach(var l in links){
+				if (Subs.RandomPercent()<l.RandomChance){
+					return l.Data;
+				}
+			}
+			return links.Last().Data;
+		}
 	}
-
 }
 	
 public class DialogueLink{

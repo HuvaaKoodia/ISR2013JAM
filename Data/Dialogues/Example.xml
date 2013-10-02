@@ -4,6 +4,7 @@
     <Text>DialogueText</Text>
     <Type>DialogueType</Type>
     <Links>
+      <!--The link's random value has an effect only if the dialogue type is RANDOM-->
       <Link random="80">DialogueName2</Link>
       <Link>DialogueName3</Link>
     </Links>

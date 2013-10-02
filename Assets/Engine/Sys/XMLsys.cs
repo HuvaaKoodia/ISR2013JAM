@@ -39,7 +39,10 @@ public class XMLsys : MonoBehaviour {
 			foreach (XmlNode d in dialogues){
 				try{
 					var name=d["Name"].InnerText;
-					var text=d["Text"].InnerText;
+					
+					var text="";
+					if (d["Text"]!=null)
+						text=d["Text"].InnerText;
 					var type="";
 					if (d["Type"]!=null)
 						type=d["Type"].InnerText;
@@ -51,8 +54,8 @@ public class XMLsys : MonoBehaviour {
 					//reading links
 					var link=d["Links"];
 					if (link!=null){
-						var links=Xdoc.GetElementsByTagName("Link");
-						foreach (XmlNode l in links){
+						foreach (XmlNode l in link){
+							if (l.Name!="Link") continue;
 							int chance=0;
 							if(l.Attributes["random"]!=null){
 								chance=int.Parse(l.Attributes["random"].Value);
@@ -64,7 +67,7 @@ public class XMLsys : MonoBehaviour {
 					dialoguedatabase.AddDialogueData(name,data);
 				}
 				catch(Exception e){
-					Debug.LogError("Dialogue data is faulty!");
+					Debug.LogError("Dialogue data is faulty!\n"+e.Message);
 					break;	
 				}
 			}
@@ -74,6 +77,7 @@ public class XMLsys : MonoBehaviour {
 	}
 	
 	public void writeXML(){
+		//example dialogue d
 		var path="Data/Dialogues";
 		checkFolder(path);
 		
@@ -92,6 +96,8 @@ public class XMLsys : MonoBehaviour {
 		addElement(data,"Type","DialogueType");
 		
 		var links=addElement(data,"Links");
+		var comment=Xdoc.CreateComment("The link's random value has an effect only if the dialogue type is RANDOM");
+		links.AppendChild(comment);
 		var link=addElement(links,"Link","DialogueName2");
 		addAttribute(link,"random","80");
 		addElement(links,"Link","DialogueName3");

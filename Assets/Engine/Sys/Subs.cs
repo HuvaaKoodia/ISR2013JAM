@@ -157,8 +157,8 @@ public class Subs{
     /// <param name="width"></param>
     public static string autofit_text(string text,int width,UIFont font)
     {
-        text=text.Replace("\n", " \n ");
-
+        text=text.Replace("\n", " \n ").Replace("\\n", " \n ");
+		
         float tw = 0;
         string all_words="",word="";
         string[] words = text.Split(new char[1]{' '});

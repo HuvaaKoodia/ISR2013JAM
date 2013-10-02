@@ -12,6 +12,8 @@ public class DialogueDatabase : MonoBehaviour {
 	}
 	/// <summary>
 	/// Call after all dialogue XML files have been read.
+	/// Sets direct references for the data files;
+	/// DEV. could also get rid of non start dialogues in the dialogue dictionary? -> only access to the beginnings.
 	/// </summary>
 	public void ParseDialogueDataBase(){
 		foreach (var dd in DialogueDatas){
@@ -22,7 +24,16 @@ public class DialogueDatabase : MonoBehaviour {
 					}
 				}	
 			}
-		}	
+		}
+		/*Debug.Log("After parse");
+		foreach (var dd in DialogueDatas){
+			Debug.Log("N: "+dd.Key+" d:"+dd.Value.Text);
+			if (dd.Value.hasAnswers()){
+				foreach (var l in dd.Value.Answers){
+					Debug.Log("l: "+l.Link+" d:"+l.Data.Text);
+				}	
+			}
+		}*/
 	}
 	
 	public void AddDialogueData(string name,DialogueData data){
@@ -77,7 +88,6 @@ public class DialogueDatabase : MonoBehaviour {
 		EndDialogueData=new DialogueData("");
 		EndDialogueData.AddAnswer(EndDialogueEndConversation);
 		
-		
 		//start dialogue 1
 		TheBattleBegins=new DialogueData("The time has come!\n\nSlay the vile Plague King and his army.\nThis is thy destiny!");
 		
@@ -110,8 +120,6 @@ public class DialogueDatabase : MonoBehaviour {
 		ans2.AddAnswer(ka1);
 		ka1=new DialogueData("What is it!\nSpit it out!!");
 		ans3.AddAnswer(ka1);
-		
-
 		
 		ka1.AddAnswer(new DialogueData("Nothing...","ENDL"));
 		ans1=new DialogueData("I cannot do what you ask of me.");
