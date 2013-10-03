@@ -322,7 +322,6 @@ public class GameController : MonoBehaviour {
 				if (!Player.Base.MOVING){
 					Player_moving=false;
 					
-							
 					//goto towers
 					if (!Player_in_tower){
 						if (PlayerInGateAlly()){
@@ -391,15 +390,14 @@ public class GameController : MonoBehaviour {
 		if (!turn_on){
 			if ( camp_state==0){
 				//flee!
-				if (enemy_units.Count<=enemy_max*0.5f){
-					
+				if (enemy_units.Count<Player_units.Count&&enemy_units.Count<=enemy_max*0.5f){
 					EnemiesFlee();
 					camp_state++;
 				}
 			}
 			if ( camp_state==1){
 				//plague!
-				if (enemy_units.Count<=enemy_max*0.25f){
+				if (enemy_units.Count<Player_units.Count&&enemy_units.Count<=enemy_max*0.25f){
 					
 					EnemiesPlague();
 					camp_state++;
