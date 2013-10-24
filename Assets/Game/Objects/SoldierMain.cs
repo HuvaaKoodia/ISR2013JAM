@@ -69,14 +69,64 @@ public class SoldierMain : MonoBehaviour {
 		HPMAX=100;
 		Fleeing=false;
 		
+				
+		INTOWER_2=false;
+		GATEGONNER=false;
+		
 	graphics_start_scale_y=graphics_offset.transform.localScale.y;
 	}
 	
 	public bool updated_already_this_turn=false;
 	bool in_an_update_ask_loop=false;
+	
+	public bool INTOWER_2=false,GATEGONNER=false;
 
 	public void UpdateTurn(List<SoldierMain> all_soldiers){
 		if (!AI||DEAD||updated_already_this_turn||in_an_update_ask_loop) return;
+		updated_already_this_turn=true;
+
+		//check for enemytower
+		if (State!=SoldierState.Sick){
+			if (x==EnemyTower.gate_x&&y==EnemyTower.gate_y){
+				//ENDGAME 
+				Debug.Log("GAMEEND!");
+				INTOWER_2=true;
+				return;
+			}
+			
+			if (x==EnemyTower.gate_x&&y==EnemyTower.gate_y+1){
+				
+				if (EnemyTower.GATEDOWN){
+					Move(0,-1);
+				}
+				else{
+					Debug.Log("NEXTOGAtE!");
+					EnemyTower.HP-=attack_power;
+					if (EnemyTower.GATEDOWN){
+						GATEGONNER=true;
+						Move(0,-1);
+					}
+					return;
+				}
+			}
+			if (x==EnemyTower.gate_x&&y==EnemyTower.gate_y-1){
+				if (EnemyTower.GATEDOWN){
+					Move(0,1);
+				}
+				else{
+					//ENDGAME
+					Debug.Log("NEXTOGAtE!");
+					EnemyTower.HP-=attack_power;
+					if (EnemyTower.GATEDOWN){
+						GATEGONNER=true;
+						Move(0,1);
+					}
+					return;
+				}
+				
+			}
+		}
+
 		//check for enemies
 		for (int i=0;i<4;i++){
 			int xx=0,xy=0;
@@ -209,8 +259,6 @@ public class SoldierMain : MonoBehaviour {
 			//SetPos(x+mx,y+my);
 			Move(mx,my);
 		}
-		
-		updated_already_this_turn=true;
 		in_an_update_ask_loop=false;
 	}
 	

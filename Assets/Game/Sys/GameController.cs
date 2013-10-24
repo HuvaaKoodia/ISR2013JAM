@@ -58,6 +58,8 @@ public class GameController : MonoBehaviour {
 		units.Add(Player.Base);
 		
 		Player.Base.AI=false;
+		Player.Base.AllyTower=PlayerTower;
+		Player.Base.EnemyTower=EnemyTower;
 		
 		Player.Base.grid=grid;
 		Player.Base.SetState(SoldierState.Ally);
@@ -68,6 +70,8 @@ public class GameController : MonoBehaviour {
 		
 		ally_max=Random.Range(100,200);
 		enemy_max=Random.Range(100,200);
+		
+
 		
 		for (int i=0;i<ally_max;i++){
 			
@@ -120,6 +124,9 @@ public class GameController : MonoBehaviour {
 		
 		all_is_locked=true;
 		t=new Timer(2000);
+		
+		if (Subs.RandomPercent()>50)
+			camp_state=-1;
 	}
 	Timer t=new Timer();
 	bool all_is_locked=false;
@@ -173,9 +180,26 @@ public class GameController : MonoBehaviour {
 		turn_on=true;
 	}
 	
+	bool gameover_camera_sweep=false;
+	bool player_won=true;
+	
 	// Update is called once per frame
 	void Update (){
-
+		
+		if (gameover_camera_sweep){
+			
+			t.Update();
+			
+			if (t.OVER){
+				if (!player_won)
+					hud_man.gameover_hud.GAMEOVER("The King Is dead! No thanks to you!");
+				else
+					hud_man.gameover_hud.GAMEOVER("The Plague King is captured!");
+			}
+			
+			return;
+		}
+		
 		//game start timer
 		if (all_is_locked){
 			t.Update();
@@ -183,6 +207,7 @@ public class GameController : MonoBehaviour {
 			if (t.OVER){
 				hud_man.King1Talk(hud_man.database.GetDialogueData("TheBattleBegins"));
 				all_is_locked=false;
+				t.Reset();
 			}
 		}
 		
@@ -336,6 +361,19 @@ public class GameController : MonoBehaviour {
 					for (int i=0;i<units.Count;i++){
 						var s=units[i];
 						s.UpdateTurn(units);
+						
+						if (s.GATEGONNER==true){
+							var pos=s.transform.position+new Vector3(2,3f,-3);
+							player_won=true;
+							if (s.EnemyTower==PlayerTower){
+								player_won=false;
+								pos=s.transform.position+new Vector3(2,3f,3);
+							}
+							Player_camera.MoveToCameraPos(pos,Quaternion.LookRotation(s.transform.position-pos,Vector3.up));
+							gameover_camera_sweep=true;
+							t.Delay=3000;
+							t.Reset();
+						}
 					}
 					//destroy units
 					for (int i=0;i<units.Count;i++){

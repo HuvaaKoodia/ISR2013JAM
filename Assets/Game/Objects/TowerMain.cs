@@ -8,6 +8,7 @@ public class TowerMain : MonoBehaviour {
 	
 	public GameObject player_pos;
 	// Use this for initialization
+	public bool GATEDOWN=false;
 	
 	public SoldierState State;
 	
@@ -27,6 +28,7 @@ public class TowerMain : MonoBehaviour {
 				DEAD=true;
 				grid.SetPos(gate_x,gate_y,false);
 				graphics.SmashPortti();
+				GATEDOWN=true;
 			}
 			else{
 				StartBlinking();
