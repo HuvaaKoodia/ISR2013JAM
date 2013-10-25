@@ -34,8 +34,12 @@ public class KnightMain : MonoBehaviour {
 	
 	int sickness_hp_dec=5,is_sick_tick=0,is_sick_tick_max=2;
 	
-	private void RotateGraphics(int rx,int ry){
+	public void RotateGraphics(int rx,int ry){
 		Base.graphics_offset.transform.rotation=Quaternion.LookRotation(new Vector3(rx,0,ry),Vector3.up);
+	}
+	
+	public void RotateGraphics(int angle){
+		Base.graphics_offset.transform.rotation=Quaternion.AngleAxis(angle,Vector3.up);
 	}
 	
 	public bool Move(int rx,int ry){

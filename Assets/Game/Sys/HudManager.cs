@@ -20,17 +20,11 @@ public class HudManager : MonoBehaviour {
 	public GameObject answer_button_prefab;
 	
 	public GameOverHud gameover_hud;
-	
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
+
 	void Update () {
 	
-		//temp
 		
+#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.F1)){
 			King1Talk(database.ZOMBIE_MeetingTheReverendKing);
 		}
@@ -49,6 +43,7 @@ public class HudManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.F5)){
 			king2.DIE();
 		}
+#endif
 		
 		if (DIALOGUE_ON){
 			if (Input.GetKeyDown(KeyCode.Alpha1)){

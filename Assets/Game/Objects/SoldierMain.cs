@@ -262,33 +262,6 @@ public class SoldierMain : MonoBehaviour {
 		in_an_update_ask_loop=false;
 	}
 	
-		
-	// Update is called once per frame
-	void Update () {
-		
-		/*
-		if (Input.GetKeyDown(KeyCode.W)){
-			Move(-1,0);
-		}
-		
-		if (Input.GetKeyDown(KeyCode.S)){
-			Move(1,0);
-		}
-		
-		if (Input.GetKeyDown(KeyCode.A)){
-			Move(0,-1);
-		}
-		
-		if (Input.GetKeyDown(KeyCode.D)){
-			Move(0,1);
-		}
-		
-		if (Input.GetKeyDown(KeyCode.F)){
-			//StartBlinking();
-			StartBlinking();
-		}*/
-	}
-	
 	void FixedUpdate(){
 		
 		if (moving){

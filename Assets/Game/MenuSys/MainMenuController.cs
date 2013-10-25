@@ -20,6 +20,10 @@ public class MainMenuController : MonoBehaviour {
 		Application.LoadLevel("GameScene");
 	}
 	
+	void ExitPressed(){
+		Application.Quit();
+	}
+	
 	void CreditsPressed(){
 		if (CreditsPanel.activeSelf)
 			CreditsPanel.SetActive(false);

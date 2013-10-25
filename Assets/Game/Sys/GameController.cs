@@ -37,8 +37,15 @@ public class GameController : MonoBehaviour {
 	int ally_max;
 	int enemy_max;
 	
+	void OnMenuChange(){
+		Player_camera.LOCK_INPUT=back_to_menu.INMENU;
+		
+	}
+	
 	// Use this for initialization
 	void Start (){
+		back_to_menu.OnChange+=OnMenuChange;
+		
 		units=new List<SoldierMain>();
 		Player_units=new List<SoldierMain>();
 		enemy_units=new List<SoldierMain>();
@@ -70,8 +77,6 @@ public class GameController : MonoBehaviour {
 		
 		ally_max=Random.Range(100,200);
 		enemy_max=Random.Range(100,200);
-		
-
 		
 		for (int i=0;i<ally_max;i++){
 			
@@ -192,9 +197,10 @@ public class GameController : MonoBehaviour {
 			
 			if (t.OVER){
 				if (!player_won)
-					hud_man.gameover_hud.GAMEOVER("The King Is dead! No thanks to you!");
+					hud_man.gameover_hud.GAMEOVER("The King Is dead!");
 				else
 					hud_man.gameover_hud.GAMEOVER("The Plague King is captured!");
+				GAMEOVER=true;
 			}
 			
 			return;
@@ -214,7 +220,7 @@ public class GameController : MonoBehaviour {
 		if (GAMEOVER){
 			if (Input.GetKey(KeyCode.Return)){
 				//go to main menu
-				Application.LoadLevel("SkeneMainMenu");
+				Application.LoadLevel("MainMenuScene");
 			}
 			return;
 		}
@@ -232,7 +238,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		//DEV.temp
-		
+#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.M)){
 			
 			if (!turn_on&&Player!=null){
@@ -270,7 +276,7 @@ public class GameController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.V)){
 			MeetKing();
 		}
-
+#endif
 		//mouse input
 		
 		if (Input.GetButtonDown("Interact & Move")){
@@ -446,7 +452,7 @@ public class GameController : MonoBehaviour {
 	
 	void MeetKing(){
 		Player.transform.position=PlayerTower.player_pos.transform.position;
-		Player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
+		Player.RotateGraphics(-90);
 		
 		if (Player.IsSick()){
 			hud_man.King1Talk(hud_man.database.ZOMBIE_MeetingTheReverendKing);
@@ -458,7 +464,7 @@ public class GameController : MonoBehaviour {
 	
 	void MeetEnemyKing(){
 		Player.transform.position=EnemyTower.player_pos.transform.position;
-		Player.Base.graphics.transform.rotation=Quaternion.AngleAxis(180,Vector3.up);
+		Player.RotateGraphics(-90);
 		
 		if (Player.IsSick()){
 			hud_man.King2Talk(hud_man.database.ZOMBIE_MeetingThePlagueKing);
@@ -522,12 +528,12 @@ public class GameController : MonoBehaviour {
 	{
 
 		Player.Base.SetPos(PlayerTower.gate_x,PlayerTower.gate_y);
-		Player.Base.graphics.transform.rotation=Quaternion.AngleAxis(-90,Vector3.up);
+		Player.RotateGraphics(0);
 	}
 	public void GOTO_ENEMYTOWER_BASE ()
 	{
 		Player.Base.SetPos(EnemyTower.gate_x,EnemyTower.gate_y);
-		Player.Base.graphics.transform.rotation=Quaternion.AngleAxis(90,Vector3.up);
+		Player.RotateGraphics(180);
 	}
 	
 }

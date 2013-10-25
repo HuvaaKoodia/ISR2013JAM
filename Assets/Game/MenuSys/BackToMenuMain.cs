@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class BackToMenuMain : MonoBehaviour {
 	
 	public GameObject Menu;
+	
+	public Action OnChange;
+	
+	public bool INMENU{get{return Menu.activeSelf;}}
 	
 	// Use this for initialization
 	void Start () {
@@ -18,6 +23,7 @@ public class BackToMenuMain : MonoBehaviour {
 	void OnYes(){
 		Time.timeScale=1;
 		Application.LoadLevel("MainMenuScene");
+
 	}
 	
 	void OnNo(){
@@ -25,13 +31,15 @@ public class BackToMenuMain : MonoBehaviour {
 	}
 	
 	public void ToggleMenu(){
+		Menu.SetActive(!Menu.activeSelf);
 		if (Menu.activeSelf){
-			Menu.SetActive(false);
-			Time.timeScale=1;
-			return;
+			Time.timeScale=0.00000001f;
 		}
-		Menu.SetActive(true);
-		Time.timeScale=0.00000001f;
+		else{
+						Time.timeScale=1;
+		}
+		if (OnChange!=null)
+			OnChange();
 	}
 	
 	public bool IsOn(){
