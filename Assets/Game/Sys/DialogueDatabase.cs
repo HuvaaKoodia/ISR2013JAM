@@ -53,11 +53,8 @@ public class DialogueDatabase : MonoBehaviour {
 	}
 	
 	public DialogueData 
-		TheBattleBegins,
-		AtTheGateOfPlagueKing,
 		TheTideTurns,
 		ThePlague,
-		AtTheGateOfReverendKing,
 		MeetingThePlagueKing,
 		MeetingTheReverendKing,
 		ZOMBIE_MeetingThePlagueKing,
@@ -69,6 +66,7 @@ public class DialogueDatabase : MonoBehaviour {
 		SoldierAllyRandom2,
 		SoldierAllyRandomStartZombie,
 		SoldierAllyRandom1Zombie,
+		
 		
 		EndDialogueData,
 		EndDialogueEndConversation,
@@ -88,25 +86,6 @@ public class DialogueDatabase : MonoBehaviour {
 		EndDialogueData=new DialogueData("");
 		EndDialogueData.AddAnswer(EndDialogueEndConversation);
 		
-		//start dialogue 1
-		TheBattleBegins=new DialogueData("The time has come!\n\nSlay the vile Plague King and his army.\nThis is thy destiny!");
-		
-		ans1=new DialogueData("I will bring you the top most part of this false King.");
-		/*
-		ans2=new DialogueData("Checkers will be pointy with the Chips of the Plague Pawns.");
-		ans3=new DialogueData("We shall force the Plague King to surrender.");
-		*/
-		
-		ans2=new DialogueData("Can we postpone this?");
-
-		ans3=new DialogueData("I.. I..");	
-
-		TheBattleBegins.AddAnswer(ans1);
-		TheBattleBegins.AddAnswer(ans2);
-		TheBattleBegins.AddAnswer(ans3);
-		
-		ka1=new DialogueData("Splendid!");
-		ans1.AddAnswer(ka1);
 		
 		/*ka1=new DialogueData("The day will be ours. Charge!"); random
 		ans1.AddAnswer(ka1);
@@ -116,34 +95,7 @@ public class DialogueDatabase : MonoBehaviour {
 		ans3.AddAnswer(ka1);*/
 		
 		
-		ka1=new DialogueData("Absolutely not!\n\nHave at them!");
-		ans2.AddAnswer(ka1);
-		ka1=new DialogueData("What is it!\nSpit it out!!");
-		ans3.AddAnswer(ka1);
 		
-		ka1.AddAnswer(new DialogueData("Nothing...","ENDL"));
-		ans1=new DialogueData("I cannot do what you ask of me.");
-		ka1.AddAnswer(ans1);
-		
-		ka1=new DialogueData("What is this! Do you dare to defy your king!");
-		ans1.AddAnswer(ka1);
-		
-		ans1=new DialogueData("Yes. That is it. Precisely,");
-		ka1.AddAnswer(ans1);
-		ans2=new DialogueData("I changed my mind. Forgive me for questioning your royal reasons.");
-		ka1.AddAnswer(ans2);
-		
-		ka1=new DialogueData("I have no need for traitorous heretics!\n\nBegone foul shade!");
-		ans1.AddAnswer(ka1);
-		
-		ans1=new DialogueData("So be it.","GAMEOVER_GAVEUP");
-		ka1.AddAnswer(ans1);
-		
-		ka2=new DialogueData("Good, now make up for this unfortunate slip by claiming the land.");
-		ans2.AddAnswer(ka2);
-		
-		
-
 		/*Plague King voi kommentoida seuraavilla:
 		PK: Go forth and let them bleed!
 		PK: Bring me His brains!
@@ -188,45 +140,6 @@ public class DialogueDatabase : MonoBehaviour {
 			
 		// At the Gate of the Plague King
 		
-		AtTheGateOfPlagueKing=new DialogueData("You stand at the gate of the Plague King.");
-		
-		ans1=new DialogueData("Knock, knock.");
-		ans2=new DialogueData("Your viral campaign is finished Mr. Plague King.");
-		ans3=new DialogueData("*lie* This is public health commission. There have been complaints about spore clouds. Please let us in.");
-		
-		ka1=new DialogueData("Who’s there?");
-		ka2=new DialogueData("I think you have a wrong address. Please try next door.");
-		ka3=new DialogueData("Come on up and we’ll make some fungi sausage together.");
-		
-		//linkitetään dialogi
-		
-		AtTheGateOfPlagueKing.AddAnswer (ans1);
-		AtTheGateOfPlagueKing.AddAnswer (ans2);
-		AtTheGateOfPlagueKing.AddAnswer (ans3);
-		
-		ans1.AddAnswer (ka1);
-		ans2.AddAnswer (ka3);
-		ans3.AddAnswer (ka2);
-		
-		//seuraavat datat + linkit
-		
-		//pelaajan vastaukset ja linkit edelliseen kuninkaan vastaukseen
-		ans1=new DialogueData("Meat.");
-		ka1.AddAnswer (ans1);
-		
-		
-		//kuninkaan vastaukset ja linkit edellisiin pelaajan vastauksiin
-		ka1=new DialogueData ("Meat who?");
-		ans1.AddAnswer (ka1);
-		
-		
-		//seuraavat datat + linkit
-		
-		ans1=new DialogueData ("Meet your doom!", "ENDL");
-		ka1.AddAnswer (ans1);
-		
-		// At the Gate of the Reverend King
-		
 /*
 		//temp
 		King1InTower=new DialogueData("What is this!! You smahed my gate!");
@@ -238,27 +151,12 @@ public class DialogueDatabase : MonoBehaviour {
 		
 		EnemiesFlee=new DialogueData("They flee cut them down");
 		 */
-		AtTheGateOfReverendKing=new DialogueData("You stand at the gate of the Reverend King, your liege.");
-		
-		ans1=new DialogueData("I shall stand by your pointiness, just let me in!");
-		ans2=new DialogueData("I forgot my sword inside, please let me in.");
-		ans3=new DialogueData("I don’t think we’re going to win. There’s so many of them and I’m scared like a little pony.");
+
 		//ans4 vain kun pelaajalla on tauti ("Let’s hug. Let’s kiss. Let’s eat together.")
 		//Reverend Kingin vastaus tähän on ("All that foam in your mouth took my appetite away.")
 		//Plague King kommentoi tähän ("Mmm… Candlelight nemesis consumerism.")
 		
-		ka1=new DialogueData("Where I point, you shall fight. Stay there!", "ENDL");
-		ka3=new DialogueData("There’s no staircase. Hop off!", "ENDL");
-		ka2=new DialogueData("Hide somewhere else, this spot is taken!", "ENDL");
-		
-		AtTheGateOfReverendKing.AddAnswer (ans1);
-		AtTheGateOfReverendKing.AddAnswer (ans2);
-		AtTheGateOfReverendKing.AddAnswer (ans3);
-		
-		ans1.AddAnswer (ka1);
-		ans2.AddAnswer (ka3);
-		ans3.AddAnswer (ka2);
-		
+
 		// Meeting the PlagueKing
 		
 		MeetingThePlagueKing=new DialogueData("Well, well. Isn't it my adversary's errant boy");

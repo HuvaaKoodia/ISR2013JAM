@@ -8,7 +8,9 @@ public class TowerMain : MonoBehaviour {
 	
 	public GameObject player_pos;
 	// Use this for initialization
-	public bool GATEDOWN=false;
+	public bool GATEDESTROYED{get;private set;}
+	
+	public bool GATEOPEN{get;private set;}
 	
 	public SoldierState State;
 	
@@ -28,7 +30,7 @@ public class TowerMain : MonoBehaviour {
 				DEAD=true;
 				grid.SetPos(gate_x,gate_y,false);
 				graphics.SmashPortti();
-				GATEDOWN=true;
+				GATEDESTROYED=true;
 			}
 			else{
 				StartBlinking();
@@ -39,6 +41,9 @@ public class TowerMain : MonoBehaviour {
 	Color _color;
 	
 	void Start (){
+		 GATEDESTROYED=false;
+		GATEOPEN=false;
+		
 		_color=new Color(0.9f,0.9f,0.9f);
 		graphics.SetColor(_color);
 		hp=100;
@@ -82,10 +87,12 @@ public class TowerMain : MonoBehaviour {
 	public void OpenGate(){
 		grid.SetPos(gate_x,gate_y,false);
 		graphics.OpenPortti();
+		GATEOPEN=true;
 	}
 	public void CloseGate(){
 		grid.SetPos(gate_x,gate_y,true);
 		graphics.ClosePortti();
+		GATEOPEN=false;
 	}
 	
 	void StartBlinking(){

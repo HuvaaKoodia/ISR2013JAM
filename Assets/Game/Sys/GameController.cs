@@ -304,7 +304,7 @@ public class GameController : MonoBehaviour {
 					}
 				}
 				if (GetMouseTower(out torni)){
-					if (!torni.DEAD&&Player.legitMovePosition(torni.gate_x,torni.gate_y)){
+					if (!torni.DEAD&&!torni.GATEOPEN&&Player.legitMovePosition(torni.gate_x,torni.gate_y)){
 						if (torni.IsAlly()){
 							TalkToKing();
 						}
@@ -360,6 +360,15 @@ public class GameController : MonoBehaviour {
 						}
 						if (PlayerInGateEnemy()){
 							MeetEnemyKing();
+						}
+					}
+					
+					//Close enemy gate
+					if (EnemyTower.GATEOPEN){
+						foreach (var u in units){
+							if (u.x==EnemyTower.gate_x&&u.y==EnemyTower.gate_y-1){
+								EnemyTower.CloseGate();
+							}
 						}
 					}
 					
@@ -474,14 +483,23 @@ public class GameController : MonoBehaviour {
 		Player_in_tower=true;
 	}
 	
+	int k1_i=0,k2_i=0;
 	void TalkToKing(){
 		if (!Player.IsSick()){
-			hud_man.King1Talk(hud_man.database.AtTheGateOfReverendKing);
+			if (k1_i==0)
+				hud_man.King1Talk(hud_man.database.GetDialogueData("AtTheGateOfTheReverendKing"));
+			else
+				hud_man.King1Talk(hud_man.database.GetDialogueData("AtTheGateOfTheReverendKingNoComment"));
+			 k1_i++;
 		}
 	}
 	void TalkToEnemyKing(){
 		if (!Player.IsSick()){
-			hud_man.King2Talk(hud_man.database.AtTheGateOfPlagueKing);
+			if (k2_i==0)
+				hud_man.King2Talk(hud_man.database.GetDialogueData("AtTheGateOfThePlagueKing"));
+			else
+				hud_man.King2Talk(hud_man.database.GetDialogueData("AtTheGateOfThePlagueKingNoComment"));
+			 k2_i++;
 		}
 	}
 	

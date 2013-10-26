@@ -1,0 +1,101 @@
+<Root>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKingNoComment</Name>
+	<Text>The time for talk is done Mr. Moody.\n\nYield or perish!</Text>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing</Name>
+	<Text>You stand at the gate of the Plague King.</Text>
+	
+	<Link>AtTheGateOfThePlagueKing_1_p1</Link>
+	<Link>AtTheGateOfThePlagueKing_1_p2</Link>
+	<Link>AtTheGateOfThePlagueKing_1_p3</Link>
+
+</Data>
+
+<!-- Player's answers-->
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_1_p1</Name>
+	<Text>Knock, knock.</Text>
+	
+	<Link>AtTheGateOfThePlagueKing_2_k1</Link>
+	
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_2_p1</Name>
+	<Text>Meat.</Text>
+	<Link>AtTheGateOfThePlagueKing_3_k1</Link>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_3_p1</Name>
+	<Text>Meet your doom!.</Text>
+	
+	<Link>AtTheGateOfThePlagueKing_4_k1</Link>
+	
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_1_p2</Name>
+	<Text>Your viral campaign is finished Mr. Plague King.</Text>
+	
+	<Link>AtTheGateOfThePlagueKing_2_k2</Link>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_2_p2</Name>
+	<Type>OPENPLAGUEGATE</Type>
+	<Text>Very well.</Text>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_1_p3</Name>
+	<Text>*lie* This is the public health commission. There have been complaints about spore clouds. Please let us in.</Text>
+	
+	<Link>AtTheGateOfThePlagueKing_2_k3</Link>
+	
+</Data>
+
+
+<!-- King's answers-->
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_2_k1</Name>
+	<Text>Who's there?</Text>
+	
+	<Link>AtTheGateOfThePlagueKing_2_p1</Link>
+	
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_3_k1</Name>
+	<Text>Meat who?</Text>
+	
+		<Link>AtTheGateOfThePlagueKing_3_p1</Link>
+	
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_4_k1</Name>
+	<Text>Well, you're not getting in.</Text>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_2_k2</Name>
+	<Text>Come on up and we'll make some fungi sausage together.</Text>
+	<Link>AtTheGateOfThePlagueKing_2_p2</Link>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfThePlagueKing_2_k3</Name>
+	<Text>I think you have a wrong address. Please try next door.</Text>
+</Data>
+
+
+
+
+</Root>

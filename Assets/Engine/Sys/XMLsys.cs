@@ -32,8 +32,13 @@ public class XMLsys : MonoBehaviour {
 			if(file.EndsWith("Example.xml")) continue;
 			
 			var Xdoc=new XmlDocument();
+			try{
 			Xdoc.Load(file);
-			
+			}
+			catch(Exception e){
+				Debug.LogError("File: "+file+" not functional\n"+e.StackTrace);
+			}
+				
 			var dialogues=Xdoc.GetElementsByTagName("Data");
 			
 			foreach (XmlNode d in dialogues){
@@ -51,17 +56,15 @@ public class XMLsys : MonoBehaviour {
 					data.Text=text;
 					data.Type=type;
 					
-					//reading links
-					var link=d["Links"];
-					if (link!=null){
-						foreach (XmlNode l in link){
-							if (l.Name!="Link") continue;
-							int chance=0;
-							if(l.Attributes["random"]!=null){
-								chance=int.Parse(l.Attributes["random"].Value);
-							}
-							data.AddLink(new DialogueLink(l.InnerText,chance));
+						//reading links
+					foreach (XmlNode n in d.ChildNodes){
+						if (n.Name!="Link") continue;
+						int chance=0;
+						if(n.Attributes["Random"]!=null){
+							chance=int.Parse(n.Attributes["Random"].Value);
 						}
+	
+	                    data.AddLink(new DialogueLink(n.InnerText, chance));
 					}
 				
 					dialoguedatabase.AddDialogueData(name,data);

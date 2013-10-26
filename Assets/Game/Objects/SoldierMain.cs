@@ -96,13 +96,13 @@ public class SoldierMain : MonoBehaviour {
 			
 			if (x==EnemyTower.gate_x&&y==EnemyTower.gate_y+1){
 				
-				if (EnemyTower.GATEDOWN){
+				if (EnemyTower.GATEDESTROYED){
 					Move(0,-1);
 				}
 				else{
 					Debug.Log("NEXTOGAtE!");
 					EnemyTower.HP-=attack_power;
-					if (EnemyTower.GATEDOWN){
+					if (EnemyTower.GATEDESTROYED){
 						GATEGONNER=true;
 						Move(0,-1);
 					}
@@ -110,14 +110,14 @@ public class SoldierMain : MonoBehaviour {
 				}
 			}
 			if (x==EnemyTower.gate_x&&y==EnemyTower.gate_y-1){
-				if (EnemyTower.GATEDOWN){
+				if (EnemyTower.GATEDESTROYED){
 					Move(0,1);
 				}
 				else{
 					//ENDGAME
 					Debug.Log("NEXTOGAtE!");
 					EnemyTower.HP-=attack_power;
-					if (EnemyTower.GATEDOWN){
+					if (EnemyTower.GATEDESTROYED){
 						GATEGONNER=true;
 						Move(0,1);
 					}

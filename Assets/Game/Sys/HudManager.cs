@@ -223,6 +223,8 @@ public class HudManager : MonoBehaviour {
 		player_camera.MoveToPlayerPos();
 	}
 	
+	public bool pking_fooled=false;
+	
 	bool checkGameEvent(string type){
 		//gameover events
 		if (type=="GAMEOVER_DEAD"){
@@ -292,6 +294,12 @@ public class HudManager : MonoBehaviour {
 		if (type=="LEAVE_ENEMYTOWER"){
 			
 			game_controller.GOTO_ENEMYTOWER_BASE();
+			EndDialogue();
+			return true;
+		}
+		
+		if (type=="OPENPLAGUEGATE"){
+			game_controller.EnemyTower.OpenGate();
 			EndDialogue();
 			return true;
 		}
