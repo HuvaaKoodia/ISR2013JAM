@@ -1,0 +1,143 @@
+<Root>
+  <Data>
+    <Name>TheBattleBegins</Name>
+    <Text>The time has come!\n\nSlay the vile Plague King and his army.\nThis is thy destiny!</Text>
+    <Link>TheBattleBegins_p_r1</Link>
+    <Link>TheBattleBegins_ans2</Link>
+    <Link>TheBattleBegins_ans3</Link>
+  </Data>
+  
+  <!-- Player random messages -->
+  
+  <Data>
+    <Name>TheBattleBegins_p_r1</Name>
+    <Type>RANDOM</Type>
+    
+      <Link>TheBattleBegins_ans1a</Link>
+	  <Link>TheBattleBegins_ans1b</Link>
+	  <Link>TheBattleBegins_ans1c</Link>
+    
+  </Data>
+  
+  <!-- Player messages -->
+  <Data>
+    <Name>TheBattleBegins_ans1a</Name>
+    <Text>I will bring you the top most part of this false King.</Text>
+    
+      <Link>TheBattleBegins_k_end1</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans1b</Name>
+    <Text>Checkers will be pointy with the Chips of the Plague Pawns.</Text>
+    
+      <Link>TheBattleBegins_k_end1</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans1c</Name>
+    <Text>We shall force the Plague King to surrender.</Text>
+    
+      <Link>TheBattleBegins_k_end1</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans2</Name>
+    <Text>Can we postpone this?</Text>
+    
+      <Link>TheBattleBegins_k_end2</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans3</Name>
+    <Text>I.. I..</Text>
+    
+      <Link>TheBattleBegins_ka1</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans4</Name>
+    <Text>I cannot do what you ask of me.</Text>
+    
+      <Link>TheBattleBegins_ka2</Link>
+    
+  </Data>
+  
+<Data>
+    <Name>TheBattleBegins_ans5</Name>
+    <Text>Yes. That's it. Precisely.</Text>
+    
+      <Link>TheBattleBegins_ka3</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ans6</Name>
+    <Text>I changed my mind. Forgive me for questioning your royal reasons.</Text>
+    
+      <Link>TheBattleBegins_ka4</Link>
+    
+  </Data>
+  
+<!-- NPC messages -->
+
+  <Data>
+    <Name>TheBattleBegins_ka1</Name>
+    <Text>What is it!\nSpit it out!!</Text>
+    
+	<Link>TheBattleBegins_p_end1</Link>
+	<Link>TheBattleBegins_ans4</Link>
+    
+  </Data>
+  
+<Data>
+    <Name>TheBattleBegins_ka2</Name>
+    <Text>What is this! Do you dare to defy your king!</Text>
+    
+	<Link>TheBattleBegins_ans5</Link>
+	<Link>TheBattleBegins_ans6</Link>
+    
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_ka3</Name>
+    <Text>I have no need for traitorous heretics!\n\nBegone foul shade!</Text>
+    
+      <Link>TheBattleBegins_p_end2</Link>
+    
+  </Data>
+  
+   <Data>
+    <Name>TheBattleBegins_ka4</Name>
+    <Text>Good, now make up for this unfortunate slip by claiming the land.</Text>
+  </Data>
+  
+  <!-- End messages -->
+  
+  <Data>
+    <Name>TheBattleBegins_p_end1</Name>
+    <Text>Nothing...</Text>
+	<Type>ENDL</Type>
+  </Data>
+  
+  <Data>
+    <Name>TheBattleBegins_p_end2</Name>
+    <Text>So be it.</Text>
+	<Type>GAMEOVER_GAVEUP</Type>
+  </Data>
+  
+   <Data>
+    <Name>TheBattleBegins_k_end1</Name>
+    <Text>Splendid!</Text>
+  </Data>
+  
+    <Data>
+    <Name>TheBattleBegins_k_end2</Name>
+    <Text>Absolutely not!\n\nHave at them!</Text>
+  </Data>
+</Root>

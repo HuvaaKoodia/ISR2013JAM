@@ -1,0 +1,64 @@
+<Root>
+
+<Data>
+	<Name>AtTheGateOfTheReverendKingNoComment</Name>
+	<Text>I tire of chatting.\n\nGo and do what I've ordered you to do.</Text>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing</Name>
+	<Text>You stand at the gate of the Reverend King, your liege.</Text>
+	
+		<Link>AtTheGateOfTheReverendKing_1_a1</Link>
+		<Link>AtTheGateOfTheReverendKing_1_a2</Link>
+		<Link>AtTheGateOfTheReverendKing_1_a3</Link>
+	
+</Data>
+
+<!-- Player's answers-->
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing_1_a1</Name>
+	<Text>I shall stand by your pointiness, just let me in!</Text>
+	
+		<Link>AtTheGateOfTheReverendKing_2_a1</Link>
+	
+</Data>
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing_1_a2</Name>
+	<Text>I forgot my sword inside, please let me in.</Text>
+	
+	<Link>AtTheGateOfTheReverendKing_2_a2</Link>
+	
+</Data>
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing_1_a3</Name>
+	<Text>I don't think we're going to win. There's so many of them and I'm scared like a little pony.</Text>
+	
+	<Link>AtTheGateOfTheReverendKing_2_a3</Link>
+	
+</Data>
+
+
+<!-- King's answers-->
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing_2_a1</Name>
+	<Text>Where I point, you shall fight. Stay there!</Text>
+</Data>
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing_2_a2</Name>
+	<Text>There's no staircase. Hop off!</Text>
+</Data>
+
+
+<Data>
+	<Name>AtTheGateOfTheReverendKing_2_a3</Name>
+	<Text>Hide somewhere else, this spot is taken!</Text>
+</Data>
+
+
+</Root>

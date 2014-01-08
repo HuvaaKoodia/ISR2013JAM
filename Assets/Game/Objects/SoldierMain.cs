@@ -401,11 +401,11 @@ public class SoldierMain : MonoBehaviour {
 		State=state;
 		
 		if (state==SoldierState.Ally){
-			setColor(new Color(0.65f,0.65f,0.65f));
+			setColor(GameController.AllyColor);
 		}
 		else
 		if (state==SoldierState.Enemy){
-			setColor(new Color(0.1f,0.1f,0.1f));
+			setColor(GameController.EnemyColor);
 		}
 		else
 		if (state==SoldierState.Sick){

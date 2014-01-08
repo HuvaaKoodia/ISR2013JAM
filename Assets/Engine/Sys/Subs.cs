@@ -2,10 +2,25 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+
+public static class MyExtensions
+{
+	public static Stream ToStream(this string str)
+	{
+	    MemoryStream stream = new MemoryStream();
+	    StreamWriter writer = new StreamWriter(stream);
+	    writer.Write(str);
+	    writer.Flush();
+	    stream.Position = 0;
+	    return stream;
+	}
+}
 
 public class Subs{
 	
 
+	
 	#region Random Subs
 	
 	/// <summary>

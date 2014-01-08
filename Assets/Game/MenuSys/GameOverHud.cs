@@ -7,6 +7,8 @@ public class GameOverHud : MonoBehaviour {
 	public UISprite sprite;
 	public UILabel gameover_label,desc_label,other_label;
 	
+	public OnDialogueToggle OnGameoverToggleEvent;
+	
 	// Use this for initialization
 	void Start (){
 		This.alpha=0;
@@ -19,6 +21,9 @@ public class GameOverHud : MonoBehaviour {
 	public void GAMEOVER(string description){
 		StartCoroutine(FadeAlpha());
 		desc_label.text=description;
+		
+		if (OnGameoverToggleEvent!=null)
+			OnGameoverToggleEvent(true);
 	}
 	
 	IEnumerator FadeAlpha(){

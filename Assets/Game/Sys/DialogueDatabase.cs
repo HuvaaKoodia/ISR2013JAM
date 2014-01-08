@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 public class DialogueDatabase : MonoBehaviour {
 	
 	public Dictionary<string,DialogueData> DialogueDatas{get;private set;}
@@ -10,6 +9,7 @@ public class DialogueDatabase : MonoBehaviour {
 	public void InitDialogueDataBase(){
 		DialogueDatas=new Dictionary<string, DialogueData>();
 	}
+	
 	/// <summary>
 	/// Call after all dialogue XML files have been read.
 	/// Sets direct references for the data files;

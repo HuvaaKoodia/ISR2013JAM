@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public delegate void OnDialogueToggle(bool b);
+
 public class HudManager : MonoBehaviour {
 	
 	public DialogueDatabase database;
@@ -20,10 +22,10 @@ public class HudManager : MonoBehaviour {
 	public GameObject answer_button_prefab;
 	
 	public GameOverHud gameover_hud;
-
-	void Update () {
 	
-		
+	public OnDialogueToggle OnDialogueToggleEvent;
+
+	void Update () {	
 #if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.F1)){
 			King1Talk(database.ZOMBIE_MeetingTheReverendKing);
@@ -131,6 +133,9 @@ public class HudManager : MonoBehaviour {
 		else{
 			setAnswers(database.EndDialogueData);
 		}
+		
+		if (OnDialogueToggleEvent!=null)
+			OnDialogueToggleEvent(true);
 	}
 	
 	void ResetKings(){
@@ -138,6 +143,9 @@ public class HudManager : MonoBehaviour {
 		speech_bubble.disappear();
 		king1.StopTalking();
 		king2.StopTalking();
+		
+		if (OnDialogueToggleEvent!=null)
+			OnDialogueToggleEvent(false);
 	}
 	
 	public bool DIALOGUE_ON{get;private set;}

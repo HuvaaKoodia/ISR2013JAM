@@ -17,7 +17,7 @@ public class XMLsys : MonoBehaviour {
 	}
 	
 	void OnDestroy(){
-		writeXML();
+		//writeXML();
 	}
 	
 	//game logic
@@ -27,6 +27,60 @@ public class XMLsys : MonoBehaviour {
 		
 		var path="Data/Dialogues";
 		
+		//loading from resources
+		var text_assets=Resources.LoadAll(path);
+		
+		foreach (var a in text_assets){
+			TextAsset asset=(TextAsset)a;
+			if(asset.name.EndsWith("Example.xml")) continue;
+			
+			var Xdoc=new XmlDocument();
+			try{
+				Xdoc.Load(asset.text.ToStream());
+			}
+			catch(Exception e){
+				Debug.LogError("File: "+asset.name+" not functional\n"+e.StackTrace);
+			}
+			
+			var dialogues=Xdoc.GetElementsByTagName("Data");
+			
+			foreach (XmlNode d in dialogues){
+				try{
+					var name=d["Name"].InnerText;
+					
+					var text="";
+					if (d["Text"]!=null)
+						text=d["Text"].InnerText;
+					var type="";
+					if (d["Type"]!=null)
+						type=d["Type"].InnerText;
+					
+					var data=new DialogueData(name);
+					data.Text=text;
+					data.Type=type;
+					
+						//reading links
+					foreach (XmlNode n in d.ChildNodes){
+						if (n.Name!="Link") continue;
+						int chance=0;
+						if(n.Attributes["Random"]!=null){
+							chance=int.Parse(n.Attributes["Random"].Value);
+						}
+	
+	                    data.AddLink(new DialogueLink(n.InnerText, chance));
+					}
+				
+					dialoguedatabase.AddDialogueData(name,data);
+				}
+				catch(Exception e){
+					Debug.LogError("Dialogue data is faulty!\n"+e.Message);
+					break;	
+				}
+			}
+		}
+		
+		
+		/** Loading from disc
 		var files=Directory.GetFiles(path);
 		foreach (var file in files){
 			if(file.EndsWith("Example.xml")) continue;
@@ -75,7 +129,7 @@ public class XMLsys : MonoBehaviour {
 				}
 			}
 		}
-		
+		***/
 		dialoguedatabase.ParseDialogueDataBase();
 	}
 	

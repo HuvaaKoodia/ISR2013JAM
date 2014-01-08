@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 	
 	public static Color ZombieColor=new Color(0.8f,0f,1f);
-	
+	public static Color EnemyColor=new Color(0.1f,0.1f,0.1f);
+	public static Color AllyColor=new Color(0.8f,0.8f,0.8f);
 	
 	public ChessboardGrid grid;
 	public GameObject soldier_prefab,knight_prefab;
@@ -39,12 +40,18 @@ public class GameController : MonoBehaviour {
 	
 	void OnMenuChange(){
 		Player_camera.LOCK_INPUT=back_to_menu.INMENU;
-		
+	}
+	
+	void OnDialToggle(bool on){
+		if (!gameover)
+			HealthBar.SetVisible(!on);
 	}
 	
 	// Use this for initialization
 	void Start (){
 		back_to_menu.OnChange+=OnMenuChange;
+		hud_man.OnDialogueToggleEvent+=OnDialToggle;
+		hud_man.gameover_hud.OnGameoverToggleEvent+=OnDialToggle;
 		
 		units=new List<SoldierMain>();
 		Player_units=new List<SoldierMain>();
@@ -196,11 +203,12 @@ public class GameController : MonoBehaviour {
 			t.Update();
 			
 			if (t.OVER){
+				GAMEOVER=true;
 				if (!player_won)
 					hud_man.gameover_hud.GAMEOVER("The King Is dead!");
 				else
 					hud_man.gameover_hud.GAMEOVER("The Plague King is captured!");
-				GAMEOVER=true;
+				
 			}
 			
 			return;

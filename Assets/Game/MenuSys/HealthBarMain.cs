@@ -3,6 +3,8 @@ using System.Collections;
 
 public class HealthBarMain : MonoBehaviour {
 	
+	
+	
 	SoldierMain target;
 	public SoldierMain Target{
 		set{
@@ -10,20 +12,16 @@ public class HealthBarMain : MonoBehaviour {
 			target.HPchanged+=HPchanged;
 		}
 	}
+	
+	public GameObject Parent;
 	public UISprite spr;
 	float Percent{set{spr.fillAmount=value;}}
 	
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	void HPchanged(int change){   
  		Percent=(float)target.HP/target.HPMAX;
+	}
+	
+	public void SetVisible(bool visible){
+		Parent.SetActive(visible);
 	}
 }

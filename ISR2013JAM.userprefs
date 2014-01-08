@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\GameController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Sys\HudManager.cs">
     <Files>
-      <File FileName="Assets\Game\Sys\HudManager.cs" Line="304" Column="16" />
-      <File FileName="Assets\Game\Objects\TowerMain.cs" Line="30" Column="15" />
-      <File FileName="Assets\Game\Sys\DialogueDatabase.cs" Line="66" Column="8" />
-      <File FileName="Assets\Game\Sys\GameController.cs" Line="501" Column="18" />
-      <File FileName="Assets\Game\Objects\SoldierMain.cs" Line="120" Column="36" />
+      <File FileName="Assets\Game\Sys\HudManager.cs" Line="302" Column="33" />
+      <File FileName="Assets\Game\Objects\TowerMain.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Sys\GameController.cs" Line="441" Column="35" />
+      <File FileName="Assets\Game\Objects\SoldierMain.cs" Line="405" Column="4" />
       <File FileName="Assets\Game\Objects\KnightMain.cs" Line="1" Column="1" />
-      <File FileName="Assets\Engine\Sys\XMLsys.cs" Line="1" Column="1" />
-      <File FileName="Assets\Game\Objects\Torningrafiikka.cs" Line="50" Column="14" />
+      <File FileName="Assets\Game\Objects\Torningrafiikka.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\MenuSys\HealthBarMain.cs" Line="22" Column="3" />
+      <File FileName="Assets\Game\MenuSys\GameOverHud.cs" Line="25" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
