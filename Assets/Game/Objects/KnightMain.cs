@@ -4,16 +4,20 @@ using System.Collections;
 public class KnightMain : MonoBehaviour {
 	
 	public SoldierMain Base;
-	
+	GameOptionsDatabase.KnightMovementType MovementType;
+
 	// Use this for initialization
 	void Start () {
-		Base.SetMovemenType(MovementType.Relative);
+		Base.SetMovemenType(SoldierMain.MovementType.Relative);
 		Base.HPMAX=500;
 		Base.attack_power=25;
 		
 		Base.move_animation="Knight_move";
 		
 		is_sick_tick=is_sick_tick_max;
+
+		var GODB=GameObject.FindGameObjectWithTag("GameOptions").GetComponent<GameOptionsDatabase>();
+		MovementType=GODB.KnightMovement;
 	}
 	
 	// Update is called once per frame
@@ -74,16 +78,28 @@ public class KnightMain : MonoBehaviour {
 	public bool Attack(int rx,int ry){
 		return AttackTo(Base.x+rx,Base.y+ry);
 	}
-	
-	public bool legitMovePosition(int wx,int wy){
+
+	public bool legitInteractPosition(int wx,int wy){
 		float dis= Vector2.Distance(new Vector2(Base.x,Base.y),new Vector2(wx,wy));
 		dis=Mathf.Floor(dis);
 		//Debug.Log(dis);
 		return dis<=2;
 	}
+
+	public bool legitMovePosition(int wx,int wy){
+		if (MovementType==GameOptionsDatabase.KnightMovementType.Freeform){
+			return legitInteractPosition(wx,wy);
+		}
+		else{//chesslike
+			int x_abs=Mathf.Abs(wx-(int)Base.x);
+			int y_abs=Mathf.Abs(wy-(int)Base.y);
+
+			return (x_abs==2&&y_abs==1)||(x_abs==1&&y_abs==2);
+		}
+	}
 	
 	public bool IsSick(){
-		return Base.State==SoldierState.Sick;;
+		return Base.State==EntityState.Sick;
 	}
 	
 	public void PlayDeathAnim(){

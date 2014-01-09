@@ -27,22 +27,22 @@ public class HudManager : MonoBehaviour {
 
 	void Update () {	
 #if UNITY_EDITOR
-		if (Input.GetKeyDown(KeyCode.F1)){
+		if (Input.GetKeyDown(KeyCode.F2)){
 			King1Talk(database.ZOMBIE_MeetingTheReverendKing);
 		}
 		
-		if (Input.GetKeyDown(KeyCode.F2)){
+		if (Input.GetKeyDown(KeyCode.F3)){
 			King2Talk(database.ZOMBIE_MeetingThePlagueKing);
 		}
 		
-		if (Input.GetKeyDown(KeyCode.F3)){
+		if (Input.GetKeyDown(KeyCode.F4)){
 			EndDialogue();
 		}
 		
-		if (Input.GetKeyDown(KeyCode.F4)){
+		if (Input.GetKeyDown(KeyCode.F5)){
 			king1.DIE();
 		}
-		if (Input.GetKeyDown(KeyCode.F5)){
+		if (Input.GetKeyDown(KeyCode.F6)){
 			king2.DIE();
 		}
 #endif

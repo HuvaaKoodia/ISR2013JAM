@@ -3,19 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public enum SoldierState{Ally,Enemy,Sick}
-public enum MovementType{Linear,Relative}
+public enum EntityState{Ally,Enemy,Sick}
 
 public delegate void HPchangedEvent(int hp_change);
 
 public class SoldierMain : MonoBehaviour {
-	
+
+
+	public enum MovementType{Linear,Relative}
+
 	public ChessboardGrid grid;
 	public GameObject graphics,graphics_offset;
 	public TowerMain EnemyTower,AllyTower,Target;
 	
 	public int x,y;
-	public SoldierState State;
+	public EntityState State;
 	
 	public bool DEAD{get;private set;}
 	public bool MOVING{get{return moving;}}
@@ -86,7 +88,7 @@ public class SoldierMain : MonoBehaviour {
 		updated_already_this_turn=true;
 
 		//check for enemytower
-		if (State!=SoldierState.Sick){
+		if (State!=EntityState.Sick){
 			if (x==EnemyTower.gate_x&&y==EnemyTower.gate_y){
 				//ENDGAME 
 				Debug.Log("GAMEEND!");
@@ -158,11 +160,11 @@ public class SoldierMain : MonoBehaviour {
 		
 		//move
 		int mx=0,my=0;
-		if (State==SoldierState.Sick){
+		if (State==EntityState.Sick){
 			float min=200202002;
 			SoldierMain closest=null;
 			foreach(var s in all_soldiers){
-				if (s==this||s.State==SoldierState.Sick) continue;
+				if (s==this||s.State==EntityState.Sick) continue;
 				float dis=Vector2.Distance(new Vector2(x,y),new Vector2(s.x,s.y));
 				if (dis<min){
 					min=dis;
@@ -295,9 +297,9 @@ public class SoldierMain : MonoBehaviour {
 		
 		if (DEAD) return;
 		
-		if (attacker.State==SoldierState.Sick){
+		if (attacker.State==EntityState.Sick){
 			if (Subs.RandomPercent()<25){
-				SetState(SoldierState.Sick);
+				SetState(EntityState.Sick);
 			}
 		}
 		
@@ -397,18 +399,18 @@ public class SoldierMain : MonoBehaviour {
 	}
 	
 	
-	public void SetState(SoldierState state){
+	public void SetState(EntityState state){
 		State=state;
 		
-		if (state==SoldierState.Ally){
+		if (state==EntityState.Ally){
 			setColor(GameController.AllyColor);
 		}
 		else
-		if (state==SoldierState.Enemy){
+		if (state==EntityState.Enemy){
 			setColor(GameController.EnemyColor);
 		}
 		else
-		if (state==SoldierState.Sick){
+		if (state==EntityState.Sick){
 			setColor(GameController.ZombieColor);
 			Fleeing=false;
 		}

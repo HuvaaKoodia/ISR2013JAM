@@ -12,7 +12,7 @@ public class TowerMain : MonoBehaviour {
 	
 	public bool GATEOPEN{get;private set;}
 	
-	public SoldierState State;
+	public EntityState State;
 	
 	
 	public bool DEAD;
@@ -118,6 +118,6 @@ public class TowerMain : MonoBehaviour {
 
 	public bool IsAlly ()
 	{
-		return State==SoldierState.Ally;
+		return State==EntityState.Ally;
 	}
 }

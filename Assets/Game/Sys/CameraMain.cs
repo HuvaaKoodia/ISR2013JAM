@@ -76,6 +76,8 @@ public class CameraMain : MonoBehaviour {
 			}
 					
 			var sw=Input.GetAxis("Mouse ScrollWheel");
+			if (sw==0)
+				sw=Input.GetAxis("Camera Zoom");
 			if (sw!=0){
 				float multi=1f;
 				if (Input.GetKey(KeyCode.LeftShift)){

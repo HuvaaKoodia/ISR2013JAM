@@ -76,7 +76,7 @@ public class GameController : MonoBehaviour {
 		Player.Base.EnemyTower=EnemyTower;
 		
 		Player.Base.grid=grid;
-		Player.Base.SetState(SoldierState.Ally);
+		Player.Base.SetState(EntityState.Ally);
 		Player.Base.SetPos(10,6);
 		
 		Player_camera.Target=Player.transform;
@@ -86,7 +86,6 @@ public class GameController : MonoBehaviour {
 		enemy_max=Random.Range(100,200);
 		
 		for (int i=0;i<ally_max;i++){
-			
 			int x,y;
 			do{
 				x=Random.Range(0,grid.GridWidth);
@@ -102,7 +101,7 @@ public class GameController : MonoBehaviour {
 			sm.AllyTower=PlayerTower;
 			sm.SetPos(x,y);
 			
-			sm.SetState(SoldierState.Ally);
+			sm.SetState(EntityState.Ally);
 			
 			Player_units.Add(sm);
 			units.Add(sm);
@@ -127,7 +126,7 @@ public class GameController : MonoBehaviour {
 			sm.EnemyTower=PlayerTower;
 			sm.SetPos(x,y);
 			
-			sm.SetState(SoldierState.Enemy);
+			sm.SetState(EntityState.Enemy);
 			
 			enemy_units.Add(sm);
 			units.Add(sm);
@@ -137,8 +136,8 @@ public class GameController : MonoBehaviour {
 		all_is_locked=true;
 		t=new Timer(2000);
 		
-		if (Subs.RandomPercent()>50)
-			camp_state=-1;
+//		if (Subs.RandomPercent()>50)
+//			camp_state=-1;
 	}
 	Timer t=new Timer();
 	bool all_is_locked=false;
@@ -235,7 +234,7 @@ public class GameController : MonoBehaviour {
 		
 		if (hud_man.DIALOGUE_ON||all_is_locked) return;
 				
-		if (Input.GetKeyDown(KeyCode.Escape)){
+		if (Input.GetButtonDown("Back To Menu")){
 			back_to_menu.ToggleMenu();
 		}
 		
@@ -274,7 +273,7 @@ public class GameController : MonoBehaviour {
 		}
 		
 		if (Input.GetKeyDown(KeyCode.B)){
-			Player.Base.SetState(SoldierState.Sick);
+			Player.Base.SetState(EntityState.Sick);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.C)){
@@ -297,8 +296,8 @@ public class GameController : MonoBehaviour {
 				
 				if (GetMouseSoldier(out soldier)){
 					if (Player.Base!=soldier){
-						if (Player.legitMovePosition(soldier.x,soldier.y)){
-							if (soldier.State==SoldierState.Ally){
+						if (Player.legitInteractPosition(soldier.x,soldier.y)){
+							if (soldier.State==EntityState.Ally){
 								if (Player.IsSick()){
 									hud_man.SoldierTalk(soldier,hud_man.database.SoldierAllyRandomStartZombie);
 								}
@@ -312,7 +311,7 @@ public class GameController : MonoBehaviour {
 					}
 				}
 				if (GetMouseTower(out torni)){
-					if (!torni.DEAD&&!torni.GATEOPEN&&Player.legitMovePosition(torni.gate_x,torni.gate_y)){
+					if (!torni.DEAD&&!torni.GATEOPEN&&Player.legitInteractPosition(torni.gate_x,torni.gate_y)){
 						if (torni.IsAlly()){
 							TalkToKing();
 						}
@@ -343,7 +342,7 @@ public class GameController : MonoBehaviour {
 				Vector2 tile_pos;
 				
 				if (GetMouseTower(out torni)){
-					if (!torni.DEAD&&Player.legitMovePosition(torni.gate_x,torni.gate_y)){
+					if (!torni.DEAD&&Player.legitInteractPosition(torni.gate_x,torni.gate_y)){
 						torni.HP-=Player.Base.attack_power;
 						PlayerActionDone();
 					}
@@ -543,9 +542,9 @@ public class GameController : MonoBehaviour {
 					if (c<=0)
 						break;
 				}
-				while (unit.State==SoldierState.Sick);
+				while (unit.State==EntityState.Sick);
 				
-				unit.SetState(SoldierState.Sick);
+				unit.SetState(EntityState.Sick);
 			}
 		
 	}

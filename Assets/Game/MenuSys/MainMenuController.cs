@@ -3,19 +3,17 @@ using System.Collections;
 
 public class MainMenuController : MonoBehaviour {
 	
-	public GameObject CreditsPanel;
-	public GameObject HelpPanel;
-	
-	// Use this for initialization
-	void Start () {
-	
+	public GameObject CreditsPanel,HelpPanel,OptionsPanel;
+	public GameObject ExitButton;
+
+	void Start(){
+		DisableAllPanels();
+
+#if UNITY_WEBPLAYER
+		ExitButton.SetActive(false);
+#endif
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
+
 	void PlayPressed(){
 		Application.LoadLevel("GameScene");
 	}
@@ -23,22 +21,34 @@ public class MainMenuController : MonoBehaviour {
 	void ExitPressed(){
 		Application.Quit();
 	}
-	
+
 	void CreditsPressed(){
-		if (CreditsPanel.activeSelf)
-			CreditsPanel.SetActive(false);
-		else{
-			CreditsPanel.SetActive(true);
-			HelpPanel.SetActive(false);
-		}
+		TogglePanel(CreditsPanel);
 	}
 	
 	void ControlsPressed(){
-		if (HelpPanel.activeSelf)
-			HelpPanel.SetActive(false);
+		TogglePanel(HelpPanel);
+		
+	}
+
+	void OptionsPressed(){
+		TogglePanel(OptionsPanel);
+		
+	}
+
+	void TogglePanel(GameObject go){
+		if (go.activeSelf)
+			go.SetActive(false);
 		else{
-			CreditsPanel.SetActive(false);
-			HelpPanel.SetActive(true);
+			DisableAllPanels();
+
+			go.SetActive(true);
 		}
+	}
+
+	void DisableAllPanels(){
+		HelpPanel.SetActive(false);
+		OptionsPanel.SetActive(false);
+		CreditsPanel.SetActive(false);
 	}
 }
